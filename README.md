@@ -1,8 +1,9 @@
 # 💻 Welcome! 💻
 
-[![](_images/linkedin-logo.png)](https://www.linkedin.com/in/jens-johnson/)
-[![](_images/twitter-logo.png)](https://twitter.com/JensJohnson9)
-[![](_images/reddit-logo.png)](https://www.reddit.com/user/jens-johnson)
+📞 [303-918-7742](tel:+13039187742) | ✉️ [jens@jens-johnson.com](mailto:jens@jens-johnson.com) |
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/600px-LinkedIn_logo_initials.png" width="25"/>](https://www.linkedin.com/in/jens-johnson/)
+[<img src="https://logodownload.org/wp-content/uploads/2018/02/reddit-logo-16.png" width="25"/>](https://www.reddit.com/user/jens-johnson)
+[<img src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-512.png" width="25"/>](https://twitter.com/JensJohnson9)
 
 ## About Me
 
