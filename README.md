@@ -20,3 +20,7 @@ When I'm not engineering or working, I love to explore the outdoors through my p
 and hiking/camping, as well as enjoy all that Denver has to offer, from craft beer to an impressive local music scene.
 
 Check out my [website](http://www.jens-johnson.com) for more on what I'm up to, and let's connect!
+
+## [`docs`](docs)
+Visit the documentation folder in this repository for some more general information, including generally-followed 
+development practices, more about me, etc.
