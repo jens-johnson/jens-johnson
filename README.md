@@ -24,3 +24,7 @@ Check out my [website](http://www.jens-johnson.com) for more on what I'm up to, 
 ## [`docs`](docs)
 Visit the documentation folder in this repository for some more general information, including generally-followed 
 development practices, more about me, etc.
+
+## [`templates`](templates)
+The templates folder in this repository contains some source code files for templates I regularly use throughout 
+projects, such as `.gitignore` or `html` files.
