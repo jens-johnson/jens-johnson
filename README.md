@@ -1,6 +1,6 @@
 # 💻 Welcome! 💻
 
-📞 [303-918-7742](tel:+13039187742) | ✉️ [jens@jens-johnson.com](mailto:jens@jens-johnson.com) |
+🌐 [jens-johnson.com](https://jens-johnson.com) 📞 [303-918-7742](tel:+13039187742) | ✉️ [jens@jens-johnson.com](mailto:jens@jens-johnson.com) |
 [![](.images/linkedin-logo.png)](https://www.linkedin.com/in/jens-johnson/)
 [![](.images/reddit-logo.png)](https://www.reddit.com/user/jens-johnson)
 [![](.images/twitter-logo.png)](https://twitter.com/JensJohnson9)
