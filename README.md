@@ -7,7 +7,7 @@
 
 ## About Me
 
-As you probably know by now, my name is Jens Johnson. I'm currently a software engineer at Nike, working remotely in 
+As you probably know by now, my name is Jens Johnson. I'm currently a software engineer at Amazon, working in 
 the Denver, Colorado area.
 
 I'm passionate about the intersection of technology, innovation, and collaborative 
