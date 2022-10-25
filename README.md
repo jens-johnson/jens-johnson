@@ -13,7 +13,7 @@ the Denver, Colorado area.
 I'm passionate about the intersection of technology, innovation, and collaborative 
 project execution to create software solutions that deliver transformational results. My interests lie in the areas 
 of data science, user experience and design, and service-driven architectures, and while I'm not cultivating these 
-through the amazing work that I'm able to do at Nike, I love to explore them through my own side projects, which, 
+through the amazing work that I'm able to do at Amazon, I love to explore them through my own side projects, which, 
 lucky for you, are mostly captured here in my GitHub!
 
 When I'm not engineering or working, I love to explore the outdoors through my passions of trail running, skiing, 
