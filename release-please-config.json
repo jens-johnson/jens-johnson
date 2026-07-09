@@ -5,16 +5,50 @@
   "packages": {
     ".": {
       "changelog-sections": [
-        { "type": "feat", "section": "✨ Features" },
-        { "type": "fix", "section": "🐛 Bug Fixes" },
-        { "type": "perf", "section": "⚡ Performance" },
-        { "type": "refactor", "section": "♻️ Refactors", "hidden": false },
-        { "type": "style", "section": "💅 Styles", "hidden": false },
-        { "type": "docs", "section": "📝 Docs", "hidden": false },
-        { "type": "ci", "section": "👷 CI", "hidden": false },
-        { "type": "chore", "section": "🔧 Chores", "hidden": false },
-        { "type": "test", "section": "🧪 Tests", "hidden": true }
+        {
+          "type": "feat",
+          "section": "\u2728 Features"
+        },
+        {
+          "type": "fix",
+          "section": "\ud83d\udc1b Bug Fixes"
+        },
+        {
+          "type": "perf",
+          "section": "\u26a1 Performance"
+        },
+        {
+          "type": "refactor",
+          "section": "\u267b\ufe0f Refactors",
+          "hidden": false
+        },
+        {
+          "type": "style",
+          "section": "\ud83d\udc85 Styles",
+          "hidden": false
+        },
+        {
+          "type": "docs",
+          "section": "\ud83d\udcdd Docs",
+          "hidden": false
+        },
+        {
+          "type": "ci",
+          "section": "\ud83d\udc77 CI",
+          "hidden": false
+        },
+        {
+          "type": "chore",
+          "section": "\ud83d\udd27 Chores",
+          "hidden": false
+        },
+        {
+          "type": "test",
+          "section": "\ud83e\uddea Tests",
+          "hidden": true
+        }
       ]
     }
-  }
+  },
+  "pull-request-title-pattern": "chore(release): release ${version}"
 }

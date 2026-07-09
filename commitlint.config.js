@@ -27,5 +27,5 @@ import { createCommitlintConfig } from './src/configs/commitlint/index.mjs';
  * @constant
  */
 export default createCommitlintConfig({
-  scopes: ['style-guide', 'file-header', 'configs', 'docs', 'deps', 'ci', 'repo'],
+  scopes: ['style-guide', 'file-header', 'configs', 'docs', 'deps', 'ci', 'release', 'repo'],
 });
