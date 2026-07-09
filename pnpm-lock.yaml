@@ -43,23 +43,23 @@ importers:
         version: 17.14.0(typescript@5.9.3)
       stylelint-config-recommended-vue:
         specifier: ^1.6.0
-        version: 1.6.1(postcss-html@1.8.1)(stylelint@17.14.0(typescript@5.9.3))
+        version: 1.6.1(postcss-html@1.8.1)
       stylelint-config-standard:
         specifier: ^37.0.0
-        version: 37.0.0(stylelint@17.14.0(typescript@5.9.3))
+        version: 37.0.0
       tsx:
-        specifier: ^4.19.0
-        version: 4.22.5
+        specifier: ^4.23.0
+        version: 4.23.0
       typescript-eslint:
         specifier: ^8.29.0
         version: 8.63.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.8.0
-        version: 19.8.1(@types/node@22.20.0)(typescript@5.9.3)
+        version: 19.8.1(@types/node@22.20.1)(typescript@5.9.3)
       '@types/node':
         specifier: ^22.10.0
-        version: 22.20.0
+        version: 22.20.1
       eslint:
         specifier: ^9.20.0
         version: 9.39.4(jiti@2.6.1)
@@ -486,8 +486,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@22.20.0':
-    resolution: {integrity: sha512-QWlFW2wf3nTjC13/DqRnBpR4ZO36VJH/JVBkA/vcnmbTBNQIlnObqyqZE1tUR7+Ni23Lda8R1BxMfbXRpCUx5g==}
+  '@types/node@22.20.1':
+    resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
 
   '@typescript-eslint/eslint-plugin@8.63.0':
     resolution: {integrity: sha512-rvwSgqT+DHpWdzfSzPatRLm02a0GlESt++9iy3hLCDY4BgkaLcl8LBi9Yh7XGFBpwcBE/K3024QuXWTpbz4FfQ==}
@@ -1688,8 +1688,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tsx@4.22.5:
-    resolution: {integrity: sha512-F7JnSfPl5ASt6LqwWyUQ3T8BwN3q0eQEbFMYa2iRWaVQmmudo0d7fRmwM4O002gsvW1bs0yBYioutsAjqLJMvQ==}
+  tsx@4.23.0:
+    resolution: {integrity: sha512-eUdUIaCr963q2h5u3+QwvYp0+eqPvn+egeqZUm0hwERCqqx1E3kK5ehbGCvqSE5MQAULr67ww0cA3jKc3YkM1w==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -1792,11 +1792,11 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@commitlint/cli@19.8.1(@types/node@22.20.0)(typescript@5.9.3)':
+  '@commitlint/cli@19.8.1(@types/node@22.20.1)(typescript@5.9.3)':
     dependencies:
       '@commitlint/format': 19.8.1
       '@commitlint/lint': 19.8.1
-      '@commitlint/load': 19.8.1(@types/node@22.20.0)(typescript@5.9.3)
+      '@commitlint/load': 19.8.1(@types/node@22.20.1)(typescript@5.9.3)
       '@commitlint/read': 19.8.1
       '@commitlint/types': 19.8.1
       tinyexec: 1.2.4
@@ -1843,7 +1843,7 @@ snapshots:
       '@commitlint/rules': 19.8.1
       '@commitlint/types': 19.8.1
 
-  '@commitlint/load@19.8.1(@types/node@22.20.0)(typescript@5.9.3)':
+  '@commitlint/load@19.8.1(@types/node@22.20.1)(typescript@5.9.3)':
     dependencies:
       '@commitlint/config-validator': 19.8.1
       '@commitlint/execute-rule': 19.8.1
@@ -1851,7 +1851,7 @@ snapshots:
       '@commitlint/types': 19.8.1
       chalk: 5.6.2
       cosmiconfig: 9.0.2(typescript@5.9.3)
-      cosmiconfig-typescript-loader: 6.3.0(@types/node@22.20.0)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3)
+      cosmiconfig-typescript-loader: 6.3.0(@types/node@22.20.1)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -2148,13 +2148,13 @@ snapshots:
 
   '@types/conventional-commits-parser@5.0.2':
     dependencies:
-      '@types/node': 22.20.0
+      '@types/node': 22.20.1
 
   '@types/estree@1.0.9': {}
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@22.20.0':
+  '@types/node@22.20.1':
     dependencies:
       undici-types: 6.21.0
 
@@ -2440,9 +2440,9 @@ snapshots:
       meow: 12.1.1
       split2: 4.2.0
 
-  cosmiconfig-typescript-loader@6.3.0(@types/node@22.20.0)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3):
+  cosmiconfig-typescript-loader@6.3.0(@types/node@22.20.1)(cosmiconfig@9.0.2(typescript@5.9.3))(typescript@5.9.3):
     dependencies:
-      '@types/node': 22.20.0
+      '@types/node': 22.20.1
       cosmiconfig: 9.0.2(typescript@5.9.3)
       jiti: 2.6.1
       typescript: 5.9.3
@@ -3192,31 +3192,24 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  stylelint-config-html@1.1.0(postcss-html@1.8.1)(stylelint@17.14.0(typescript@5.9.3)):
+  stylelint-config-html@1.1.0(postcss-html@1.8.1):
     dependencies:
       postcss-html: 1.8.1
-      stylelint: 17.14.0(typescript@5.9.3)
 
-  stylelint-config-recommended-vue@1.6.1(postcss-html@1.8.1)(stylelint@17.14.0(typescript@5.9.3)):
+  stylelint-config-recommended-vue@1.6.1(postcss-html@1.8.1):
     dependencies:
       postcss-html: 1.8.1
       semver: 7.8.5
-      stylelint: 17.14.0(typescript@5.9.3)
-      stylelint-config-html: 1.1.0(postcss-html@1.8.1)(stylelint@17.14.0(typescript@5.9.3))
-      stylelint-config-recommended: 18.0.0(stylelint@17.14.0(typescript@5.9.3))
+      stylelint-config-html: 1.1.0(postcss-html@1.8.1)
+      stylelint-config-recommended: 18.0.0
 
-  stylelint-config-recommended@15.0.0(stylelint@17.14.0(typescript@5.9.3)):
-    dependencies:
-      stylelint: 17.14.0(typescript@5.9.3)
+  stylelint-config-recommended@15.0.0: {}
 
-  stylelint-config-recommended@18.0.0(stylelint@17.14.0(typescript@5.9.3)):
-    dependencies:
-      stylelint: 17.14.0(typescript@5.9.3)
+  stylelint-config-recommended@18.0.0: {}
 
-  stylelint-config-standard@37.0.0(stylelint@17.14.0(typescript@5.9.3)):
+  stylelint-config-standard@37.0.0:
     dependencies:
-      stylelint: 17.14.0(typescript@5.9.3)
-      stylelint-config-recommended: 15.0.0(stylelint@17.14.0(typescript@5.9.3))
+      stylelint-config-recommended: 15.0.0
 
   stylelint@17.14.0(typescript@5.9.3):
     dependencies:
@@ -3302,7 +3295,7 @@ snapshots:
   tslib@2.8.1:
     optional: true
 
-  tsx@4.22.5:
+  tsx@4.23.0:
     dependencies:
       esbuild: 0.28.1
     optionalDependencies:
