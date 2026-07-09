@@ -36,7 +36,7 @@
     "eslint-config-prettier": "^10.1.0",
     "eslint-plugin-import-x": "^4.10.0",
     "eslint-plugin-jsdoc": "^50.6.0",
-    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-sonarjs": "^3.0.0",
     "figlet": "^1.8.0",
     "globals": "^16.0.0",
