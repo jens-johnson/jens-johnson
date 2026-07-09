@@ -41,3 +41,7 @@ jobs:
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
+          # A fine-grained PAT (contents + pull-requests write) lets the auto-opened Release PR trigger the
+          # required CI checks; GitHub suppresses downstream workflows for default-token actions. Falls back
+          # to GITHUB_TOKEN (PR still opens; its checks need manual approval until the secret exists).
+          token: ${{ secrets.RELEASE_PLEASE_PAT || secrets.GITHUB_TOKEN }}
