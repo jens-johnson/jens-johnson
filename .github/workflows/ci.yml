@@ -1,0 +1,68 @@
+# █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+#
+#                                 ██        ██                     ▄▄
+#                                 ▀▀        ▀▀                     ██
+#                               ████      ████                ▄███▄██   ▄████▄   ██▄  ▄██
+#                                 ██        ██               ██▀  ▀██  ██▄▄▄▄██   ██  ██
+#                                 ██        ██      █████    ██    ██  ██▀▀▀▀▀▀   ▀█▄▄█▀
+#                                 ██        ██               ▀██▄▄███  ▀██▄▄▄▄█    ████
+#                                 ██        ██                 ▀▀▀ ▀▀    ▀▀▀▀▀      ▀▀
+#                              ████▀     ████▀
+#
+# █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+# █████████████████████████████████████████████ .github/workflows/ci.yml ██████████████████████████████████████████████
+#
+# Continuous integration: mirrors the local check gate (lint + typecheck) on pushes and PRs to main, and validates PR
+# commit messages with commitlint.
+#
+# ─── SEE ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+#
+#   • docs/developer/overview.md
+#
+# █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+name: 🔀 CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The full local gate, mirrored: lint (eslint + prettier) then typecheck
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+
+  # Validate PR commit messages against the repo commitlint config (agents and automation included)
+  commitlint:
+    name: commitlint
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
