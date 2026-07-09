@@ -36,6 +36,11 @@ export function createCommitlintConfig(options = {}) {
 
   return {
     extends: ['@commitlint/config-conventional'],
+
+    /* Dependabot applies the configured chore(deps) prefix but cannot lowercase its "Bump" subject; its PR commits
+       are exempt, and mainline history stays conforming via the squash-merge subject set at merge time */
+    ignores: [(message) => /^chore\(deps(-dev)?\): Bump /.test(message)],
+
     rules: {
       /* Restrict scopes to the repo's enum when one is provided */
       ...(scopes.length ? { 'scope-enum': [2, 'always', scopes] } : {}),
