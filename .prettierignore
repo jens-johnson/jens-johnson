@@ -23,3 +23,7 @@ docs/style-guide/
 
 # The GitHub profile README is hand-crafted HTML/markdown art
 README.md
+
+# Release Please owns these; its generated formatting is not Prettier's
+CHANGELOG.md
+.release-please-manifest.json
