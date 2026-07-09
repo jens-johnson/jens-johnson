@@ -24,6 +24,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Conventional-commit messages so the CI commitlint gate passes (chore(deps): bump ...)
+    commit-message:
+      prefix: chore(deps)
     groups:
       minor-and-patch:
         update-types:
@@ -35,3 +38,6 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Conventional-commit messages so the CI commitlint gate passes
+    commit-message:
+      prefix: chore(deps)
