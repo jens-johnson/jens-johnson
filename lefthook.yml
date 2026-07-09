@@ -1,0 +1,45 @@
+# █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+#
+#                                 ██        ██                     ▄▄
+#                                 ▀▀        ▀▀                     ██
+#                               ████      ████                ▄███▄██   ▄████▄   ██▄  ▄██
+#                                 ██        ██               ██▀  ▀██  ██▄▄▄▄██   ██  ██
+#                                 ██        ██      █████    ██    ██  ██▀▀▀▀▀▀   ▀█▄▄█▀
+#                                 ██        ██               ▀██▄▄███  ▀██▄▄▄▄█    ████
+#                                 ██        ██                 ▀▀▀ ▀▀    ▀▀▀▀▀      ▀▀
+#                              ████▀     ████▀
+#
+# █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+# ███████████████████████████████████████████████████ lefthook.yml ████████████████████████████████████████████████████
+#
+# Git hooks: staged formatting and linting on pre-commit, commitlint on commit-msg, and the check gate on pre-push.
+#
+# █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+# Runs on every `git commit`, against staged files only: Prettier formats and ESLint autofixes them, and
+# `stage_fixed` re-stages whatever the fixers changed so the commit contains the corrected content
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: '*.{ts,mts,cts,js,mjs,cjs,json,md,yml,yaml}'
+      run: pnpm exec prettier --write {staged_files}
+      stage_fixed: true
+    lint:
+      glob: '*.{ts,mts,cts,js,mjs,cjs}'
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+
+# Validates the commit message against the repo commitlint config (Conventional Commits, scope enum,
+# lowercase subject); a non-conforming message aborts the commit
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm exec commitlint --edit {1}
+
+# Runs the full check gate (lint + typecheck) before anything leaves the machine; a red gate blocks the push.
+# Escape hatches (emergencies only): LEFTHOOK_EXCLUDE=<hook> for one hook, LEFTHOOK=0 for all
+pre-push:
+  commands:
+    check:
+      run: pnpm lint && pnpm typecheck
