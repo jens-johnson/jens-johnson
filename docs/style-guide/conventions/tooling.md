@@ -22,6 +22,7 @@ Related:
 | lefthook       | Git hooks (staged lint, commit-msg, pre-push)  | `lefthook.yml`              |
 | tsc / vue-tsc  | Typechecking (`pnpm typecheck`)                | `tsconfig.json`             |
 | Vitest         | Tests (`pnpm test`)                            | `vitest.config.ts` (as needed) |
+| direnv + nvm   | Shell activation, Node pinning, wrappers       | `.envrc` / `.nvmrc` (see [shell-and-environment.md](shell-and-environment.md)) |
 
 Every config file opens with the standard [file header](file-headers.md). Canonical Prettier + EditorConfig blocks
 live in [formatting.md](formatting.md#enforcement); the TypeScript baseline lives in
@@ -158,7 +159,7 @@ Escape hatches: `LEFTHOOK_EXCLUDE=<hook>` for one hook, `LEFTHOOK=0` for all; bo
 
 ## The `check` Gate
 
-Every repo exposes **`pnpm check`** (lint → typecheck → build, sequential) as the local CI mirror
+Every repo exposes **`pnpm check`** (lint → typecheck → test → build when present, sequential) as the local CI mirror
 ([project-structure.md](project-structure.md#script-naming)); CI runs the same steps, so green `check` means a green
 pipeline.
 
@@ -188,9 +189,10 @@ export default createEslintConfig({
 ```
 
 The ESLint/stylelint/commitlint plugins ship as the package's `dependencies`, so consumers install one thing plus
-the peer runners (`eslint`, `prettier`, `typescript`). Two templates cannot be consumed via npm and are copied
-instead: `.editorconfig` and `lefthook.yml` (this repo's root copies are the canon). The
-[file-header generator](file-headers.md#tooling) rides along as the `file-header-generator` bin.
+the peer runners (`eslint`, `prettier`, `typescript`). Some templates cannot be consumed via npm and are copied
+instead: `.editorconfig`, `lefthook.yml`, and the shell environment files (`.nvmrc`, `.envrc`, `scripts/shell/`,
+`bin/wrappers/`; see [shell-and-environment.md](shell-and-environment.md#adoption)); this repo's copies are the
+canon. The [file-header generator](file-headers.md#tooling) rides along as the `file-header-generator` bin.
 
 ## Adoption
 

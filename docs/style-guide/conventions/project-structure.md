@@ -10,6 +10,7 @@ Related:
 - [vue-nuxt.md](vue-nuxt.md) (the Nuxt shape)
 - [tooling.md](tooling.md) (the config files)
 - [cli-and-scripts.md](cli-and-scripts.md) (scripts/bin)
+- [shell-and-environment.md](shell-and-environment.md) (direnv, `.nvmrc`, wrappers)
 
 ## Generic TS/Node Skeleton
 
@@ -18,11 +19,13 @@ The default shape for libraries, CLIs, publishers, and services (anything not ow
 ```text
 .
 ├── bin/                    # Executable entry shims, any runtime (shell, node/tsx, ...); shebang + dispatch only
+│   └── wrappers/           #   PATH-prepended command wrappers (see shell-and-environment.md)
 ├── src/                    # Library/application code; kind-first, then domain-grouped
 │   ├── configs/            #   Shareable tool configs (when the repo exports them)
 │   └── utils/<domain>/     #   Barrel modules grouped by domain (i.e. developer-tooling/)
 │       └── <module>/       #     index / types / enums / constants / utils
 ├── scripts/                # Operational tooling (generators, publishers, one-offs)
+│   ├── shell/              #   The shell environment scripts (init, validation, wrapper core)
 │   └── utils/              #   Shared script utilities, barrel modules when non-trivial
 ├── test/
 │   └── unit/               # Mirrors src/; <subject>.test.ts
@@ -35,6 +38,7 @@ The default shape for libraries, CLIs, publishers, and services (anything not ow
 ├── README.md
 ├── package.json
 ├── tsconfig.json
+├── .nvmrc / .envrc         # Node pin + direnv entrypoint (see shell-and-environment.md)
 └── <tooling dotfiles>      # .editorconfig, .prettierrc.json, eslint config, ...
 ```
 
@@ -88,7 +92,7 @@ Scripts are **colon-namespaced verbs**: a base verb runs the aggregate, `verb:to
 | `lint:fix` or `fix:<tool>`    | Autofix variants                                        |
 | `typecheck`                   | `tsc --noEmit` / `vue-tsc`                              |
 | `test`                        | Vitest                                                  |
-| `check`                       | The full local CI gate: lint → typecheck → build        |
+| `check`                       | The full local CI gate: lint → typecheck → test → build (when present) |
 | `<domain>` / `<domain>:<sub>` | Repo tooling (`header`, `header:banner`, `gen:favicon`) |
 
 **Every repo has a `check` script** replicating CI locally; green `check` means CI will pass.

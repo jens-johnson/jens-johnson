@@ -17,23 +17,32 @@ live in the [style guide](../style-guide/README.md).
 ## Getting Started
 
 ```bash
+direnv allow         # one-time: activates the shell environment (nvm switch, auto-install, wrappers)
 corepack enable      # activates the pinned pnpm (see the packageManager field)
 pnpm install         # installs deps AND git hooks (lefthook, via the prepare script)
 ```
 
-Node `>= 20` and `pnpm 10.10.0` (Corepack-pinned) are the only prerequisites; TypeScript runs through `tsx`, so
-there is no build step.
+Node `24` (pinned in `.nvmrc`) and `pnpm 10.10.0` (Corepack-pinned) are the only prerequisites; TypeScript runs
+through `tsx`, so there is no build step. With [direnv](https://direnv.net/) installed, entering the repo handles
+Node switching and dependency freshness automatically, and puts command wrappers on PATH that re-validate the Node
+version before `pnpm`/`git` runs (and reject `npm`/`npx`); see
+[shell-and-environment.md](../style-guide/conventions/shell-and-environment.md).
 
 ## Repository Map
 
 ```text
 .
-├── bin/                                  # Executable shims (shebang + import only)
-│   └── file-header-generator.ts
+├── bin/                                  # Executable shims (shebang + dispatch only)
+│   ├── file-header-generator.ts
+│   └── wrappers/                         #   PATH-prepended command wrappers (pnpm/git validate; npm/npx reject)
 ├── src/                                  # What the package ships; kind-first layout
 │   ├── configs/                          #   Shareable tool configs (prettier/eslint/stylelint/commitlint/tsconfig)
 │   └── utils/developer-tooling/          #   Utility barrel modules, grouped by domain
 │       └── file-header-generator/        #     cli / index / enums / types / constants / utils
+├── scripts/
+│   └── shell/                            # Shell environment: init, Node validation, deps freshness, wrapper core
+├── test/
+│   └── unit/                             # Vitest unit tests, mirroring src/
 ├── docs/
 │   ├── developer/                        # This manual
 │   └── style-guide/                      # The conventions hub + spokes
@@ -41,7 +50,9 @@ there is no build step.
 ├── file-header.schema.json               # JSON Schema for the header config
 ├── eslint.config.js                      # Root configs: thin re-exports of src/configs (dogfooding)
 ├── commitlint.config.js
+├── vitest.config.ts                      # Test runner config (test/unit/)
 ├── lefthook.yml                          # Git hooks (commented per hook)
+├── .nvmrc / .envrc                       # Node pin + direnv entrypoint
 ├── .editorconfig / .prettierignore
 └── package.json                          # @jens-johnson/style-guide: exports map, bin, scripts
 ```
@@ -53,7 +64,8 @@ there is no build step.
 | `pnpm lint`          | ESLint + Prettier check across the repo                                 |
 | `pnpm lint:fix`      | Autofix both (ESLint `--fix`, then Prettier `--write`)                  |
 | `pnpm typecheck`     | `tsc --noEmit` against the strict base tsconfig                         |
-| `pnpm check`         | The full local CI gate: lint, then typecheck; green = pushable          |
+| `pnpm test`          | Vitest, single run (`pnpm test:watch` for watch mode)                   |
+| `pnpm check`         | The full local CI gate: lint → typecheck → test; green = pushable       |
 | `pnpm header`        | Generate a file header (`--file`, `--description`, `--spec`, `--write`) |
 | `pnpm header:banner` | Render/save a figlet project banner                                     |
 | `pnpm prepare`       | (Automatic on install) installs the lefthook git hooks                  |
@@ -66,7 +78,7 @@ Hooks are managed by [lefthook](../../lefthook.yml) and install automatically on
 | ------------ | ------------------------------------------------------------------------------ |
 | `pre-commit` | Prettier + ESLint `--fix` on staged files; fixes are re-staged (`stage_fixed`) |
 | `commit-msg` | commitlint validates the message (Conventional Commits + the repo scope enum)  |
-| `pre-push`   | `pnpm lint && pnpm typecheck`; a red gate blocks the push                      |
+| `pre-push`   | `pnpm check` (lint + typecheck + test); a red gate blocks the push             |
 
 Escape hatches (emergencies only): `LEFTHOOK_EXCLUDE=<hook> git commit` skips one hook; `LEFTHOOK=0 git commit`
 skips all of them.
@@ -148,6 +160,8 @@ repo has no squash-duplication hazard; single-branch flow).
 
 ## Verification
 
-`pnpm check` is the single gate: if it is green locally, the push hooks and CI will be green. When
-touching the generator, also smoke the CLI (`pnpm header --help`, a `--write` round-trip on a scratch file) since
-pure-core tests do not cover the I/O edge.
+`pnpm check` is the single gate: if it is green locally, the push hooks and CI will be green. The unit tests under
+`test/unit/` cover the generator's pure cores and its write-mode header replacement; when touching the generator,
+also smoke the CLI (`pnpm header --help`, a `--write` round-trip on a scratch file) to exercise the argv-to-command
+edge the tests skip. When touching the shell environment, run `bash scripts/shell/init.sh` and a wrapped command
+(`PATH="$PWD/bin/wrappers:$PATH" pnpm --version`) as the equivalent smoke.

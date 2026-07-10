@@ -128,7 +128,8 @@ The one-glance defaults. Each links to its spoke for rationale and examples.
 | Rule             | Default                                                    |
 |------------------|------------------------------------------------------------|
 | Commits          | Conventional Commits; lowercase subjects; repo scope enums |
-| Package manager  | `pnpm`, pinned via Corepack (`packageManager` field)       |
+| Package manager  | `pnpm`, pinned via Corepack (`packageManager` field); `npm`/`npx` rejected by wrappers |
+| Node version     | Pinned by `.nvmrc` (bare major); direnv + nvm switch on entry, wrappers re-validate |
 | Formatting owner | Prettier owns formatting; ESLint owns quality              |
 | Prose            | No em dashes; semicolons or a rewrite; whole sentences; `i.e.` never `e.g.` |
 
@@ -152,6 +153,7 @@ The one-glance defaults. Each links to its spoke for rationale and examples.
 | [`testing.md`](conventions/testing.md)                                       | Vitest conventions, layout, naming, fixtures                          | ✅     |
 | [`tooling.md`](conventions/tooling.md)                                       | Prettier/ESLint/stylelint/commitlint/lefthook/editorconfig baselines  | ✅     |
 | [`cli-and-scripts.md`](conventions/cli-and-scripts.md)                       | Thin-CLI + module pattern, parseArgs, help text, exits                | ✅      |
+| [`shell-and-environment.md`](conventions/shell-and-environment.md)           | direnv activation, Node pinning, command wrappers, shell scripts      | ✅      |
 | [`git-workflow.md`](conventions/git-workflow.md)                             | Commits, branches, promotions, Release Please                         | ✅     |
 | [`docs-and-prose.md`](conventions/docs-and-prose.md)                         | Markdown style, README anatomy, badges, prose punctuation             | ✅     |
 
