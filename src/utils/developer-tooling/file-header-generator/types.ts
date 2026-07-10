@@ -125,6 +125,21 @@ export interface IHeaderSpec {
   /* Environment variables the file reads */
   env?: IField[];
 
+  /* For API handlers: the authentication/authorization requirements */
+  auth?: string[];
+
+  /* For API handlers: the route parameters */
+  params?: IField[];
+
+  /* For API handlers: the query-string parameters */
+  query?: IField[];
+
+  /* For API handlers: the request-body fields */
+  body?: IField[];
+
+  /* For API handlers: the error responses (status code plus the condition that produces it) */
+  throws?: string[];
+
   /* Description of the file's return value(s) */
   returns?: string[];
 

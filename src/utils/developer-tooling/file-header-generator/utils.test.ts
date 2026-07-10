@@ -216,6 +216,12 @@ describe('detectFileType', () => {
     expect(detectFileType('scripts/build/run.js')).toBe(FileType.script);
   });
 
+  it('reads a .ts file under server/api or server/routes as an http api handler', () => {
+    expect(detectFileType('server/api/lab/vertifix/commit.post.ts')).toBe(FileType.api);
+    expect(detectFileType('server/routes/auth/callback.get.ts')).toBe(FileType.api);
+    expect(detectFileType('server/utils/strava/utils.ts')).toBe(FileType.module);
+  });
+
   it('tolerates a leading nuxt alias segment before reading the extension', () => {
     expect(detectFileType('#components/data/chip.vue')).toBe(FileType.vue);
   });
@@ -278,6 +284,36 @@ describe('buildHeaderContent', () => {
 
     expect(lines.join('\n')).not.toContain('─── USAGE');
     expect(lines.join('\n')).not.toContain('─── SEE');
+  });
+
+  it('renders the api contract sections in order for a handler spec', () => {
+    const spec: IHeaderSpec = {
+      ...minimalSpec,
+      file: 'server/api/example.post.ts',
+      usage: 'POST /api/example',
+      auth: ['Admin session required'],
+      body: [
+        {
+          name: 'activityId',
+          description: 'The activity to replace',
+          type: 'number',
+          required: true,
+        },
+      ],
+      returns: ['The validation verdict'],
+      throws: ['409 when the original activity still exists'],
+    };
+    const lines: string[] = buildHeaderContent(spec, config, FileType.api);
+    const rendered: string = lines.join('\n');
+
+    // Populated sections appear in contract order; unpopulated ones (PARAMS/QUERY/SIDE EFFECTS) are omitted
+    const order: number[] = ['AUTH', 'BODY', 'RETURNS', 'THROWS'].map((title: string): number =>
+      rendered.indexOf(createSectionDivider(title)),
+    );
+    expect(Math.min(...order)).toBeGreaterThan(-1);
+    expect([...order].sort((a: number, b: number): number => a - b)).toEqual(order);
+    expect(rendered).not.toContain('─── PARAMS');
+    expect(rendered).toContain('  • 409 when the original activity still exists');
   });
 
   it('renders a divider plus body for each populated section', () => {

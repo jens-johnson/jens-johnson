@@ -40,6 +40,9 @@ export enum CommentStyle {
  * @enum
  */
 export enum FileType {
+  /* HTTP API handlers (Nitro server/api and server/routes endpoints) */
+  api = 'api',
+
   /* Configuration files (JSON/YAML/TOML/.env, tsconfig, etc.) */
   config = 'config',
 

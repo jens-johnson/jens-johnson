@@ -335,6 +335,44 @@ export const SECTIONS_BY_FILE_TYPE: Record<FileType, ISection[]> = {
     },
     SEE_SECTION,
   ],
+  [FileType.api]: [
+    USAGE_SECTION,
+    {
+      title: 'AUTH',
+      getLines: (spec: IHeaderSpec): string[] | undefined => (spec.auth?.length ? renderList(spec.auth) : undefined),
+    },
+    {
+      title: 'PARAMS',
+      getLines: (spec: IHeaderSpec): string[] | undefined =>
+        spec.params?.length ? renderEntries(spec.params, ARG_KEYS) : undefined,
+    },
+    {
+      title: 'QUERY',
+      getLines: (spec: IHeaderSpec): string[] | undefined =>
+        spec.query?.length ? renderEntries(spec.query, ARG_KEYS) : undefined,
+    },
+    {
+      title: 'BODY',
+      getLines: (spec: IHeaderSpec): string[] | undefined =>
+        spec.body?.length ? renderEntries(spec.body, ARG_KEYS) : undefined,
+    },
+    {
+      title: 'RETURNS',
+      getLines: (spec: IHeaderSpec): string[] | undefined =>
+        spec.returns?.length ? renderList(spec.returns) : undefined,
+    },
+    {
+      title: 'THROWS',
+      getLines: (spec: IHeaderSpec): string[] | undefined =>
+        spec.throws?.length ? renderList(spec.throws) : undefined,
+    },
+    {
+      title: 'SIDE EFFECTS',
+      getLines: (spec: IHeaderSpec): string[] | undefined =>
+        spec.sideEffects?.length ? renderList(spec.sideEffects) : undefined,
+    },
+    SEE_SECTION,
+  ],
   [FileType.module]: [
     USAGE_SECTION,
     {
@@ -373,6 +411,11 @@ export function detectFileType(fileName: string): FileType {
   const fileType: FileType | undefined = FILE_TYPE_BY_EXTENSION[(extension || fileName).toLowerCase()];
   if (!fileType) {
     return FileType.generic;
+  }
+
+  // A .ts/.js under a server/api or server/routes path reads as an HTTP handler with a request/response contract
+  if (fileType === FileType.module && /(^|\/)server\/(api|routes)\//.test(fileName)) {
+    return FileType.api;
   }
 
   // A .ts/.js under a bin/ or scripts/ path reads as an executable script, not a library module

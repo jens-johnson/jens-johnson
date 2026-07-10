@@ -85,12 +85,16 @@ Sections render in this order and are omitted when empty:
 | File type                          | Sections (in order)                                                                  |
 |------------------------------------|--------------------------------------------------------------------------------------|
 | **Vue component**                  | `USAGE`, `PROPS`, `MODEL`, `EMITS`, `SLOTS`, `EXPOSED`, `SEE`                        |
+| **API handler** (server/api|routes)| `USAGE`, `AUTH`, `PARAMS`, `QUERY`, `BODY`, `RETURNS`, `THROWS`, `SIDE EFFECTS`, `SEE` |
 | **Script** (sh/node)               | `USAGE`, `ARGUMENTS`, `OPTIONS`, `ENV`, `RETURNS`, `SIDE EFFECTS`, `EXAMPLES`, `SEE` |
 | **Module** (ts/js)                 | `USAGE`, `EXPORTS`, `SEE`                                                            |
 | **Config** (yaml, toml, env)       | `USAGE`, `ENV`, `SEE`                                                                |
 | **Markup / doc / generic**         | `USAGE`, `SEE`                                                                       |
 
 Stylesheets (`.css`, `.scss`) are treated as **generic** (`USAGE`, `SEE`); pass `--kind` to override any detection.
+API handlers are detected by path (`server/api/**`, `server/routes/**`); the `USAGE` line states the method +
+route (i.e. `POST /api/lab/vertifix/commit`), `THROWS` lists error responses as `<status> when <condition>`, and
+an endpoint documents its full request/response contract (auth, params, query, body, returns).
 
 Two content shapes:
 

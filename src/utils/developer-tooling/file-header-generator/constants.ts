@@ -188,7 +188,7 @@ Usage:
 Generate options:
   --file, -f <path>          Banner filename, i.e. "#components/data/chip.vue" or "bin/deploy.sh"  (required)
   --description, -d <text>   One-line description                                                  (required)
-  --kind <kind>              vue | script | module | config | markup | doc | generic  (default: by ext)
+  --kind <kind>              vue | api | script | module | config | markup | doc | generic  (default: by ext)
   --comment <style>          block | hash | html                                            (default: by ext)
   --usage <text>             USAGE section body (use \\n for line breaks)
   --see <url>                SEE link (repeatable)
