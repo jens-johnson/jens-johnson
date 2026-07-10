@@ -32,6 +32,9 @@ the moment a command actually runs (a shell without direnv, a version switched m
 - **Prefix-match semantics**: a bare major (or `major.minor`) pin accepts any current version beneath it, so
   validation needs **no nvm and no network**; `v24.14.1` satisfies a pin of `24` by string prefix alone.
 - nvm performs the *switching* (via direnv on entry); validation never depends on it.
+- **Staleness is watched in CI, not the shell**: the scheduled `node-lts-watch` workflow compares the pin against the
+  newest Node LTS weekly (`scripts/shell/check-node-lts.sh`) and opens a labeled bump issue when a newer LTS major
+  ships, closing it automatically once the pin catches up. The shell entrypoint never pays for that network call.
 
 ## The direnv Entrypoint
 

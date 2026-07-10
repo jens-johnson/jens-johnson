@@ -152,6 +152,7 @@ consumed via npm; copy this repo's root files as the canonical templates.
 | Release Please | Maintains a Release PR from conventional commits; merging tags `vX.Y.Z` + GitHub Release                                     |
 | CodeQL         | JS/TS security scanning on pushes, PRs, and a weekly cron                                                                    |
 | Dependabot     | Weekly npm updates (minor/patch grouped) + GitHub Actions bumps                                                              |
+| Node LTS watch | Weekly cron compares `.nvmrc` to the newest Node LTS; opens a `node-lts` bump issue when stale, closes it when current       |
 | Branch ruleset | `main` blocks force-pushes/deletions and requires the `check` status on PRs; the repo admin holds a bypass for direct pushes |
 
 The release flow: conventional commits land on `main`, Release Please accumulates them into a Release PR, and
