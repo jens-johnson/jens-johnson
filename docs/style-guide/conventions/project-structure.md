@@ -23,12 +23,12 @@ The default shape for libraries, CLIs, publishers, and services (anything not ow
 ├── src/                    # Library/application code; kind-first, then domain-grouped
 │   ├── configs/            #   Shareable tool configs (when the repo exports them)
 │   └── utils/<domain>/     #   Barrel modules grouped by domain (i.e. developer-tooling/)
-│       └── <module>/       #     index / types / enums / constants / utils
+│       └── <module>/       #     index / types / enums / constants / utils / utils.test.ts (unit tests in band)
 ├── scripts/                # Operational tooling (generators, publishers, one-offs)
 │   ├── shell/              #   The shell environment scripts (init, validation, wrapper core)
 │   └── utils/              #   Shared script utilities, barrel modules when non-trivial
 ├── test/
-│   └── unit/               # Mirrors src/; <subject>.test.ts
+│   └── e2e/                # End-to-end tests only; unit tests live beside their subject file
 ├── docs/
 │   ├── architecture/       # System/design docs (CI, data flow, ...)
 │   ├── style-guide/        # Or a pointer to the canonical guide

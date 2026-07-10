@@ -11,7 +11,7 @@
  *                              ████▀     ████▀
  *
  * █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
- * ███████████████████████ test/unit/utils/developer-tooling/file-header-generator/utils.test.ts ███████████████████████
+ * ██████████████████████████ src/utils/developer-tooling/file-header-generator/utils.test.ts ██████████████████████████
  *
  * Unit tests for the file-header generator's pure cores: width math, banner geometry, section rendering, detection,
  * assembly, and write-mode header replacement.
@@ -25,19 +25,17 @@ import { join } from 'node:path';
 
 import { afterAll, describe, expect, it } from 'vitest';
 
-import type { IHeaderConfig, IHeaderSpec } from '../../../../../src/utils/developer-tooling/file-header-generator';
+import { ARG_KEYS, MAX_INNER_CONTENT_LENGTH } from './constants';
+import { CommentStyle, FileType } from './enums';
+import type { IHeaderConfig, IHeaderSpec } from './types';
 import {
   applyCommentStyle,
-  ARG_KEYS,
   buildHeaderContent,
   centerBanner,
-  CommentStyle,
   createSectionDivider,
   detectCommentStyle,
   detectFileType,
   fileNameBar,
-  FileType,
-  MAX_INNER_CONTENT_LENGTH,
   normalizeStringLength,
   removeExistingHeader,
   renderEntries,
@@ -47,7 +45,7 @@ import {
   stripCommonIndent,
   wrap,
   writeHeaderToFile,
-} from '../../../../../src/utils/developer-tooling/file-header-generator';
+} from './utils';
 
 /* ─── Fixtures ───────────────────────────────────────────────────────────────────────────────────────────────────── */
 

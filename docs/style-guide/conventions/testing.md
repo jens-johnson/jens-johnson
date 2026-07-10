@@ -27,7 +27,12 @@ Related:
 ## Layout & Naming
 
 - **Vitest** is the runner; `pnpm test` runs it (`vitest run` in CI).
-- Tests live in **`test/unit/`**, mirroring the source tree; files are **`<subject>.test.ts`** (`tcx.test.ts`).
+- **Unit tests live in band**: `<file>.test.ts` sits beside the file it exercises, inside the module folder
+  (`src/utils/foo/utils.ts` → `src/utils/foo/utils.test.ts`). The test is part of the module, not a parallel tree
+  to keep in sync.
+- **Test files never enter the barrel**: a module's `index.ts` re-exports its public files, and `*.test.ts` is not
+  one of them. Tests import their subject from the sibling file directly (`./utils`), never through the barrel.
+- **E2E tests are the exception**: they exercise the system, not a module, so they live standalone in `test/e2e/`.
 - Test files take the standard [file header](file-headers.md) describing what they assert.
 
 ## Test Shape

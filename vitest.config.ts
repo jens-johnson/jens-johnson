@@ -13,7 +13,7 @@
  * █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
  * █████████████████████████████████████████████████ vitest.config.ts ██████████████████████████████████████████████████
  *
- * The Vitest configuration: unit tests under test/unit/, mirroring src/.
+ * The Vitest configuration: in-band unit tests (*.test.ts beside their subject files).
  *
  * ─── USAGE ───────────────────────────────────────────────────────────────────────────────────────────────────────────
  *
@@ -29,13 +29,13 @@
 import { defineConfig } from 'vitest/config';
 
 /**
- * The Vitest configuration: unit tests live under `test/unit/`, mirroring `src/`.
+ * The Vitest configuration: in-band unit tests, `<file>.test.ts` beside the file each exercises.
  * @public
  * @default
  * @constant
  */
 export default defineConfig({
   test: {
-    include: ['test/unit/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'scripts/**/*.test.ts', 'bin/**/*.test.ts'],
   },
 });

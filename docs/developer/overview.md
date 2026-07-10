@@ -38,11 +38,10 @@ version before `pnpm`/`git` runs (and reject `npm`/`npx`); see
 ├── src/                                  # What the package ships; kind-first layout
 │   ├── configs/                          #   Shareable tool configs (prettier/eslint/stylelint/commitlint/tsconfig)
 │   └── utils/developer-tooling/          #   Utility barrel modules, grouped by domain
-│       └── file-header-generator/        #     cli / index / enums / types / constants / utils
+│       └── file-header-generator/        #     cli / index / enums / types / constants / utils (+ utils.test.ts)
 ├── scripts/
 │   └── shell/                            # Shell environment: init, Node validation, deps freshness, wrapper core
-├── test/
-│   └── unit/                             # Vitest unit tests, mirroring src/
+├── test/                                 # E2E tests only (unit tests live beside their subject files)
 ├── docs/
 │   ├── developer/                        # This manual
 │   └── style-guide/                      # The conventions hub + spokes
@@ -50,7 +49,7 @@ version before `pnpm`/`git` runs (and reject `npm`/`npx`); see
 ├── file-header.schema.json               # JSON Schema for the header config
 ├── eslint.config.js                      # Root configs: thin re-exports of src/configs (dogfooding)
 ├── commitlint.config.js
-├── vitest.config.ts                      # Test runner config (test/unit/)
+├── vitest.config.ts                      # Test runner config (in-band *.test.ts)
 ├── lefthook.yml                          # Git hooks (commented per hook)
 ├── .nvmrc / .envrc                       # Node pin + direnv entrypoint
 ├── .editorconfig / .prettierignore
@@ -161,8 +160,7 @@ repo has no squash-duplication hazard; single-branch flow).
 
 ## Verification
 
-`pnpm check` is the single gate: if it is green locally, the push hooks and CI will be green. The unit tests under
-`test/unit/` cover the generator's pure cores and its write-mode header replacement; when touching the generator,
+`pnpm check` is the single gate: if it is green locally, the push hooks and CI will be green. The in-band unit tests (`*.test.ts` beside their subjects) cover the generator's pure cores and its write-mode header replacement; when touching the generator,
 also smoke the CLI (`pnpm header --help`, a `--write` round-trip on a scratch file) to exercise the argv-to-command
 edge the tests skip. When touching the shell environment, run `bash scripts/shell/init.sh` and a wrapped command
 (`PATH="$PWD/bin/wrappers:$PATH" pnpm --version`) as the equivalent smoke.

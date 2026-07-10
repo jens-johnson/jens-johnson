@@ -24,7 +24,7 @@ Related:
 | Classes                  | `PascalCase`              | `HeaderRenderer`                             |
 | Environment variables    | `SCREAMING_SNAKE_CASE`    | `STRAVA_CLIENT_ID`                           |
 | Composables              | `use` + `PascalCase` body | `useCardTilt` (in `use-card-tilt/`)          |
-| Test files               | `<subject>.test.ts`       | `tcx.test.ts`                                |
+| Test files               | `<file>.test.ts`, in band | `utils.test.ts` (beside `utils.ts`)          |
 
 **Framework exceptions** override this table where a contract demands exact names (i.e. Nuxt Content prose
 components like `ProseH2.vue` must be `PascalCase` filenames; Vue's `interface Props`; module augmentations).
