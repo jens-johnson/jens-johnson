@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.3.0](https://github.com/jens-johnson/jens-johnson/compare/v0.2.0...v0.3.0) (2026-07-10)
+
+
+### ✨ Features
+
+* **configs:** add a framework-aware eslint factory for nuxt consumers ([ab7d5cf](https://github.com/jens-johnson/jens-johnson/commit/ab7d5cfec43149f2039d04dcacd7f472a0d66fb9))
+* **configs:** enforce always-brace and explicit function return types ([c9b6bee](https://github.com/jens-johnson/jens-johnson/commit/c9b6bee175830a5fff419d04da21ac6fc722045e))
+* **repo:** add direnv shell environment with node pinning and command wrappers ([f63d29f](https://github.com/jens-johnson/jens-johnson/commit/f63d29f949b74e86409c98ef4a6270439c088943))
+
+
+### 🐛 Bug Fixes
+
+* **file-header:** avoid a check-then-use race when reading the target file ([0bd48d1](https://github.com/jens-johnson/jens-johnson/commit/0bd48d132c338b2b1a5c5d2190c06fb63065192b))
+* **file-header:** preserve indentation and blank-line spacing in generated headers ([bd6db14](https://github.com/jens-johnson/jens-johnson/commit/bd6db1415fa2b52a77f8c1b9637fdf04ee8a870d))
+
+
+### 👷 CI
+
+* watch node lts releases and open a bump issue when the pin goes stale ([f956a1e](https://github.com/jens-johnson/jens-johnson/commit/f956a1e301842e9d421b03ca3cf930c2f8a07a1b))
+
+
+### 🔧 Chores
+
+* **docs:** update dev docs ([f5df3f1](https://github.com/jens-johnson/jens-johnson/commit/f5df3f12affd922301362bf17164941e5d0d8ff7))
+
 ## [0.2.0](https://github.com/jens-johnson/jens-johnson/compare/v0.1.0...v0.2.0) (2026-07-09)
 
 
