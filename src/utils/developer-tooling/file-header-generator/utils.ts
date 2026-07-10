@@ -513,9 +513,18 @@ export function removeExistingHeader(fileBody: string): string {
  * @throws If the file cannot be read or written
  */
 export function writeHeaderToFile(targetPath: string, header: string, fileType: FileType): void {
-  // Resolve the provided file path
+  // Resolve the provided file path and read it, treating a missing file as empty; reading directly (instead of an
+  // existsSync check first) avoids a check-then-use race on the file system
   const absolutePath: string = resolve(process.cwd(), targetPath);
-  const existing: string = existsSync(absolutePath) ? readFileSync(absolutePath, 'utf8') : '';
+  let existing: string;
+  try {
+    existing = readFileSync(absolutePath, 'utf8');
+  } catch (error: unknown) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+      throw error;
+    }
+    existing = '';
+  }
 
   // Vue: insert the header just inside the (existing or created) <script setup> block
   if (fileType === FileType.vue) {

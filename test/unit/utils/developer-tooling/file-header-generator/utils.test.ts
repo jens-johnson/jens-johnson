@@ -371,6 +371,14 @@ describe('writeHeaderToFile', () => {
     expect(readFileSync(scriptPath, 'utf8')).toBe(firstPass);
   });
 
+  it('creates a missing target file containing just the header', () => {
+    const freshPath: string = join(scratchDirectory, 'fresh.ts');
+    const header: string = renderHeader({ ...minimalSpec, file: 'fresh.ts' }, config);
+    writeHeaderToFile(freshPath, header, FileType.module);
+
+    expect(readFileSync(freshPath, 'utf8')).toBe(header);
+  });
+
   it('inserts the header inside the script block of a vue single-file component', () => {
     const componentPath: string = join(scratchDirectory, 'component.vue');
     writeFileSync(componentPath, '<script setup lang="ts">\nconst x: number = 1;\n</script>\n');
