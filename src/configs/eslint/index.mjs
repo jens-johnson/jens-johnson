@@ -35,18 +35,14 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 /**
- * Builds the shared ESLint flat config: framework-agnostic base rules implementing the style guide, with
- * `eslint-config-prettier` neutralizing formatting conflicts and the layout-hardening block re-enabled after it.
- * @public
+ * Builds the framework-independent style-guide blocks shared by every factory below: ignores, globals, import
+ * hygiene, type naming, JSDoc, sonarjs, general rules, the Prettier neutralizer, and the layout-hardening block.
+ * @internal
  * @function
- * @param {...object} overrides - Additional flat-config blocks appended after the shared blocks (repo-specific
- *   rules/ignores); each is a standard ESLint flat-config object (`{ name, files, ignores, rules, ... }`)
- * @returns {object[]} The composed flat-config array
- * @see {@link https://github.com/jens-johnson/jens-johnson/blob/main/docs/style-guide/conventions/tooling.md}
+ * @returns {object[]} The shared flat-config blocks, in application order
  */
-export function createEslintConfig(...overrides) {
-  // noinspection JSCheckFunctionSignatures
-  return tseslint.config(
+function createStyleGuideBlocks() {
+  return [
     /**
      * ═══ Baseline Ignores ════════════════════════════════════════════════════════════════════════════════════════════
      *
@@ -56,14 +52,6 @@ export function createEslintConfig(...overrides) {
       name: '@jens-johnson/style-guide/ignores',
       ignores: ['node_modules/**', 'dist/**', 'coverage/**', '.nuxt/**', '.output/**'],
     },
-
-    /**
-     * ═══ Recommended Cores ═══════════════════════════════════════════════════════════════════════════════════════════
-     *
-     * ESLint + typescript-eslint (non-type aware for light consumption)
-     */
-    eslintPluginJs.configs.recommended,
-    ...tseslint.configs.recommended,
 
     /**
      * ═══ Global Language Options ═════════════════════════════════════════════════════════════════════════════════════
@@ -266,14 +254,55 @@ export function createEslintConfig(...overrides) {
         '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
       },
     },
+  ];
+}
+
+/**
+ * Builds the shared ESLint flat config: framework-agnostic base rules implementing the style guide, with
+ * `eslint-config-prettier` neutralizing formatting conflicts and the layout-hardening block re-enabled after it.
+ * @public
+ * @function
+ * @param {...object} overrides - Additional flat-config blocks appended after the shared blocks (repo-specific
+ *   rules/ignores); each is a standard ESLint flat-config object (`{ name, files, ignores, rules, ... }`)
+ * @returns {object[]} The composed flat-config array
+ * @see {@link https://github.com/jens-johnson/jens-johnson/blob/main/docs/style-guide/conventions/tooling.md}
+ */
+export function createEslintConfig(...overrides) {
+  // noinspection JSCheckFunctionSignatures
+  return tseslint.config(
+    /**
+     * ═══ Recommended Cores ═══════════════════════════════════════════════════════════════════════════════════════════
+     *
+     * ESLint + typescript-eslint (non-type aware for light consumption)
+     */
+    eslintPluginJs.configs.recommended,
+    ...tseslint.configs.recommended,
 
     /**
-     * ═══ Overrides ═══════════════════════════════════════════════════════════════════════════════════════════════════
+     * ═══ Style-Guide Blocks ══════════════════════════════════════════════════════════════════════════════════════════
      *
-     * Pass repo-specific overrides last so they win
+     * The framework-independent rule blocks, then repo-specific overrides last so they win
      */
+    ...createStyleGuideBlocks(),
     ...overrides,
   );
+}
+
+/**
+ * Builds the style-guide flat config for framework consumers (i.e. Nuxt via `@nuxt/eslint`): identical to
+ * {@link createEslintConfig} minus the ESLint/typescript-eslint recommended cores and parser setup, which the
+ * framework's own config already provides. Registering a second typescript-eslint instance from this package would
+ * conflict with the framework's; spread this into the framework wrapper instead:
+ * `withNuxt(...createFrameworkEslintConfig(...))`.
+ * @public
+ * @function
+ * @param {...object} overrides - Additional flat-config blocks appended after the shared blocks (repo-specific
+ *   rules/ignores); each is a standard ESLint flat-config object (`{ name, files, ignores, rules, ... }`)
+ * @returns {object[]} The composed flat-config array, without the recommended cores
+ * @see {@link https://github.com/jens-johnson/jens-johnson/blob/main/docs/style-guide/conventions/tooling.md}
+ */
+export function createFrameworkEslintConfig(...overrides) {
+  return [...createStyleGuideBlocks(), ...overrides];
 }
 
 /**

@@ -173,7 +173,7 @@ reduce to one-line re-exports (install via npm once published, or
 | Tool       | Consumption                                                                        |
 |------------|--------------------------------------------------------------------------------------|
 | Prettier   | `"prettier": "@jens-johnson/style-guide/prettier"` in `package.json`                  |
-| ESLint     | `createEslintConfig(...overrides)` from `@jens-johnson/style-guide/eslint`            |
+| ESLint     | `createEslintConfig(...overrides)` from `@jens-johnson/style-guide/eslint`; framework repos spread `createFrameworkEslintConfig(...overrides)` into their wrapper (i.e. `withNuxt(...)`), whose base already provides the js/ts cores |
 | Stylelint  | `extends: ['@jens-johnson/style-guide/stylelint']`                                    |
 | commitlint | `createCommitlintConfig({ scopes })` from `@jens-johnson/style-guide/commitlint`      |
 | tsconfig   | `"extends": "@jens-johnson/style-guide/tsconfig"`                                     |
