@@ -7,5 +7,6 @@
   "useTabs": false,
   "arrowParens": "always",
   "endOfLine": "lf",
-  "vueIndentScriptAndStyle": false
+  "vueIndentScriptAndStyle": false,
+  "singleAttributePerLine": true
 }

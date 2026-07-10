@@ -12,6 +12,8 @@ Related:
 
 ## Punctuation & Voice
 
+- **American English spelling, always**: behavior/color/normalize/initialize, never
+  behaviour/colour/normalise/initialise. Applies to prose, comments, JSDoc, and identifiers alike.
 - **No em dashes (`—`), ever**; use semicolons, colons, parentheses, or rewrite the sentence. The en dash for
   numeric ranges (`1–5`) and box-drawing characters (`─`) in dividers/banners are different glyphs and are fine.
 - **`i.e.` is the house abbreviation for introducing examples and clarifications; never use `e.g.`** This applies

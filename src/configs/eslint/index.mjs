@@ -330,7 +330,34 @@ export function createEslintConfig(...overrides) {
  * @see {@link https://github.com/jens-johnson/jens-johnson/blob/main/docs/style-guide/conventions/tooling.md}
  */
 export function createFrameworkEslintConfig(...overrides) {
-  return [...createStyleGuideBlocks(), ...overrides];
+  return [
+    ...createStyleGuideBlocks(),
+
+    /**
+     * ═══ Vue Templates ═══════════════════════════════════════════════════════════════════════════════════════════════
+     *
+     * Sibling tags in templates are separated by a blank line (autofixed). The `vue` plugin instance is registered by
+     * the framework base (i.e. @nuxt/eslint), so this block only references its rule.
+     */
+    {
+      name: '@jens-johnson/style-guide/vue-templates',
+      files: ['**/*.vue'],
+      rules: {
+        'vue/padding-line-between-tags': [
+          'error',
+          [
+            {
+              blankLine: 'always',
+              prev: '*',
+              next: '*',
+            },
+          ],
+        ],
+      },
+    },
+
+    ...overrides,
+  ];
 }
 
 /**

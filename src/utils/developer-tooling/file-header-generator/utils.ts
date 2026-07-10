@@ -526,12 +526,14 @@ export function writeHeaderToFile(targetPath: string, header: string, fileType: 
     existing = '';
   }
 
-  // Vue: insert the header just inside the (existing or created) <script setup> block
+  // Vue: insert the header just inside the (existing or created) <script setup> block, replacing any existing
+  // header at the top of the block so a re-run stays idempotent
   if (fileType === FileType.vue) {
     const scriptOpen: RegExpMatchArray | null = existing.match(/<script[^>]*>\n?/);
     if (scriptOpen && scriptOpen.index !== undefined) {
       const insertAt: number = scriptOpen.index + scriptOpen[0].length;
-      writeFileSync(absolutePath, existing.slice(0, insertAt) + header + existing.slice(insertAt));
+      const scriptBody: string = removeExistingHeader(existing.slice(insertAt));
+      writeFileSync(absolutePath, existing.slice(0, insertAt) + header + scriptBody);
     } else {
       writeFileSync(absolutePath, `<script setup lang="ts">\n${header}</script>\n\n${existing}`);
     }

@@ -96,11 +96,13 @@ fight the formatter on every run. Prettier's 120-column behavior is the rule. Th
   [comments.md](comments.md#member-comments)).
 - **One blank line** between execution blocks inside a function body.
 - **No consecutive blank lines** inside function bodies.
-- **Three blank lines before a module-scope section divider, one after it**; dividers mark major in-file boundaries
-  and get extra air (see [comments.md](comments.md#section-dividers)).
+- **One blank line before a module-scope section divider in Prettier-owned files** (TS/JS/Vue), one after it;
+  Prettier hard-collapses consecutive blank lines, so one is the maximum air available. **Shell and other
+  hash-comment files, which Prettier does not format, use three blank lines** before dividers (see
+  [comments.md](comments.md#section-dividers) and [shell-and-environment.md](shell-and-environment.md)).
 
-> **Note:** The rare divider *inside* a function body follows the body's one-blank-line rhythm; the three-line rule
-> applies at module scope, where it cannot collide with the no-consecutive-blank-lines rule above.
+> **Note:** The three-line variant exists only where Prettier has no jurisdiction; inside Prettier-owned files,
+> every divider follows the one-blank-line rhythm.
 
 ## Numeric Literals
 

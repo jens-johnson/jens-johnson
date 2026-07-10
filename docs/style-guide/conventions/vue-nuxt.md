@@ -48,7 +48,7 @@ interface Props {
   pad?: TPadPreset;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props: TPropsWithDefaults<Props, 'as' | 'pad'> = withDefaults(defineProps<Props>(), {
   as: 'div',
   pad: 'md',
 });
@@ -74,6 +74,11 @@ function onMouseEnter(): void {
 
 - **Props are `interface Props`** (the documented [naming exemption](naming.md#type-prefixes)), members commented
   like any shape, defaults via `withDefaults`.
+- **The `props` const is annotated** with `TPropsWithDefaults<TProps, TDefaulted>` (from
+  `@jens-johnson/style-guide/types/vue`): the raw props interface with the defaulted keys promoted to required,
+  wrapped readonly. Maximal annotations do not stop at component boundaries.
+- **The component's [file header](file-headers.md) documents its contract**: populated PROPS / MODEL / EMITS /
+  SLOTS / EXPOSED sections, regenerated via the generator's `--spec` whenever the contract changes.
 - Emits and models are **typed**: `defineEmits<{ select: [id: string] }>()`, `defineModel<string>()`.
 - Template comments are HTML comments labeling structural regions (`<!-- Bento grid -->`).
 - Template attributes use double quotes ([formatting.md](formatting.md#quotes)).
@@ -100,6 +105,12 @@ app/components/
   can override Nuxt Content prose components and serve as MDC blocks; filenames are `PascalCase` by necessity.
 - Primitives are scoped-slot composition bases: widgets wrap them and destructure slot props rather than duplicating
   tracking/measurement logic.
+
+## Templates
+
+- **One attribute per line** on multi-attribute elements; Prettier's `singleAttributePerLine` owns this.
+- **A blank line separates sibling tags** (`vue/padding-line-between-tags`, autofixed); comments attach to the tag
+  they describe.
 
 ## Composables
 

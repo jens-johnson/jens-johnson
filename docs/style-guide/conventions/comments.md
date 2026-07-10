@@ -274,8 +274,9 @@ Files with logical groupings (constants, helpers, assembly, I/O, ...) separate t
 - Inside indented code, subtract the indent from the total (i.e. a 2-space indent yields 118 characters of content).
 - Prefer the `/* */` form over `//` for dividers.
 
-- **Three blank lines precede a section divider** (one blank line follows it); major sections get clear breathing
-  room. See [`formatting.md`](formatting.md#blank-lines).
+- **One blank line precedes a section divider in Prettier-owned files** (Prettier collapses anything more); shell
+  and other non-Prettier files use three for extra breathing room. One blank line follows the divider everywhere.
+  See [`formatting.md`](formatting.md#blank-lines).
 
 ## Punctuation
 

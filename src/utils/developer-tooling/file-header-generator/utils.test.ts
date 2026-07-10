@@ -394,4 +394,24 @@ describe('writeHeaderToFile', () => {
       `<script setup lang="ts">\n${header}const x: number = 1;\n</script>\n`,
     );
   });
+
+  it('replaces its own previous output inside a vue script block, so writing twice yields the same file', () => {
+    const componentPath: string = join(scratchDirectory, 'idempotent.vue');
+    writeFileSync(componentPath, '<script setup lang="ts">\nconst x: number = 1;\n</script>\n');
+    const header: string = renderHeader(
+      {
+        ...minimalSpec,
+        file: 'idempotent.vue',
+        kind: 'vue',
+      },
+      config,
+    );
+
+    // Two consecutive writes must not stack headers inside the script block
+    writeHeaderToFile(componentPath, header, FileType.vue);
+    const firstPass: string = readFileSync(componentPath, 'utf8');
+    writeHeaderToFile(componentPath, header, FileType.vue);
+
+    expect(readFileSync(componentPath, 'utf8')).toBe(firstPass);
+  });
 });

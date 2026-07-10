@@ -177,6 +177,7 @@ reduce to one-line re-exports (install via npm once published, or
 | Stylelint  | `extends: ['@jens-johnson/style-guide/stylelint']`                                    |
 | commitlint | `createCommitlintConfig({ scopes })` from `@jens-johnson/style-guide/commitlint`      |
 | tsconfig   | `"extends": "@jens-johnson/style-guide/tsconfig"`                                     |
+| Vue types  | `import type { TPropsWithDefaults } from '@jens-johnson/style-guide/types/vue';`      |
 
 ```javascript
 // eslint.config.js in a consumer repo

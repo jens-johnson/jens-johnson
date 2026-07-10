@@ -135,6 +135,7 @@ Everything ships from the single `@jens-johnson/style-guide` package:
 | `@jens-johnson/style-guide/stylelint`                                     | `extends` in a stylelint config                   |
 | `@jens-johnson/style-guide/commitlint`                                    | `createCommitlintConfig({ scopes })`              |
 | `@jens-johnson/style-guide/tsconfig`                                      | `"extends"` in a consumer's `tsconfig.json`       |
+| `@jens-johnson/style-guide/types/vue`                                     | Shared Vue utility types (`TPropsWithDefaults`)   |
 | `@jens-johnson/style-guide/utils/developer-tooling/file-header-generator` | Programmatic header generation                    |
 | `file-header-generator` (bin)                                             | The CLI, on any consumer's PATH after install     |
 

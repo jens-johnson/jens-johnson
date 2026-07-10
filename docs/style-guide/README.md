@@ -85,7 +85,9 @@ The one-glance defaults. Each links to its spoke for rationale and examples.
 | Conditional bodies   | Always braced, body on its own line (`curly: all`)            |
 | Line endings         | `LF`; every file ends with a newline                          |
 | Multiline thresholds | Objects with 3+ properties always break (ESLint-enforced); imports/params break at 120 (Prettier) |
-| Section dividers     | `/* ─── Name ─── */` padded to 120 chars; 3 blank lines before |
+| Section dividers     | `/* ─── Name ─── */` padded to 120 chars; 1 blank line before (3 in shell) |
+| Vue template attrs   | One attribute per line on multi-attribute elements (Prettier `singleAttributePerLine`) |
+| Vue sibling tags     | Blank line between sibling tags (`vue/padding-line-between-tags`, autofixed) |
 
 ### Naming
 
@@ -131,7 +133,7 @@ The one-glance defaults. Each links to its spoke for rationale and examples.
 | Package manager  | `pnpm`, pinned via Corepack (`packageManager` field); `npm`/`npx` rejected by wrappers |
 | Node version     | Pinned by `.nvmrc` (bare major); direnv + nvm switch on entry, wrappers re-validate |
 | Formatting owner | Prettier owns formatting; ESLint owns quality              |
-| Prose            | No em dashes; semicolons or a rewrite; whole sentences; `i.e.` never `e.g.` |
+| Prose            | No em dashes; semicolons or a rewrite; whole sentences; `i.e.` never `e.g.`; American English spelling |
 
 ## Conventions Index
 

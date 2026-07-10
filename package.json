@@ -14,6 +14,7 @@
     "./stylelint": "./src/configs/stylelint/index.mjs",
     "./commitlint": "./src/configs/commitlint/index.mjs",
     "./tsconfig": "./src/configs/tsconfig/base.json",
+    "./types/vue": "./src/types/vue/index.ts",
     "./utils/developer-tooling/file-header-generator": "./src/utils/developer-tooling/file-header-generator/index.ts"
   },
   "bin": {
