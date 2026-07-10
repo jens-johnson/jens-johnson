@@ -88,15 +88,20 @@ export function wrap(text: string, width: number = MAX_INNER_CONTENT_LENGTH): st
       return result;
     }
 
-    // Greedily accumulate words, flushing the current line before it exceeds the width
-    const leftover: string = paragraph.split(' ').reduce((current: string, word: string): string => {
-      if (current && normalizeStringLength(`${current} ${word}`) > width) {
-        result.push(current);
-        return word;
-      }
-      return current ? `${current} ${word}` : word;
-    }, '');
-    if (leftover) {
+    // Greedily accumulate words, flushing the current line before it exceeds the width; the paragraph's leading
+    // indent is preserved on every wrapped line so indented content (i.e. bullets) keeps its alignment
+    const indent: string = paragraph.slice(0, paragraph.length - paragraph.trimStart().length);
+    const leftover: string = paragraph
+      .trimStart()
+      .split(' ')
+      .reduce((current: string, word: string): string => {
+        if (current !== indent && normalizeStringLength(`${current} ${word}`) > width) {
+          result.push(current);
+          return `${indent}${word}`;
+        }
+        return current === indent ? `${indent}${word}` : `${current} ${word}`;
+      }, indent);
+    if (leftover !== indent) {
       result.push(leftover);
     }
 
@@ -508,9 +513,18 @@ export function removeExistingHeader(fileBody: string): string {
  * @throws If the file cannot be read or written
  */
 export function writeHeaderToFile(targetPath: string, header: string, fileType: FileType): void {
-  // Resolve the provided file path
+  // Resolve the provided file path and read it, treating a missing file as empty; reading directly (instead of an
+  // existsSync check first) avoids a check-then-use race on the file system
   const absolutePath: string = resolve(process.cwd(), targetPath);
-  const existing: string = existsSync(absolutePath) ? readFileSync(absolutePath, 'utf8') : '';
+  let existing: string;
+  try {
+    existing = readFileSync(absolutePath, 'utf8');
+  } catch (error: unknown) {
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+      throw error;
+    }
+    existing = '';
+  }
 
   // Vue: insert the header just inside the (existing or created) <script setup> block
   if (fileType === FileType.vue) {
@@ -529,13 +543,11 @@ export function writeHeaderToFile(targetPath: string, header: string, fileType: 
   const shebangMatch: RegExpMatchArray | null = existing.match(/^#!.*\n/);
   const shebang: string = shebangMatch ? shebangMatch[0] : '';
 
-  // Replace any existing header in the remainder, then reassemble with the shebang first
+  // Replace any existing header in the remainder, then reassemble (shebang first when present) with one blank line
+  // separating the header from the body
   const body: string = removeExistingHeader(existing.slice(shebang.length));
-  if (shebang) {
-    writeFileSync(absolutePath, shebang + header + (body ? body.replace(/^\n+/, '') : ''));
-  } else {
-    writeFileSync(absolutePath, header + (body ? `\n${body.replace(/^\n+/, '')}` : ''));
-  }
+  const separatedBody: string = body ? `\n${body.replace(/^\n+/, '')}` : '';
+  writeFileSync(absolutePath, shebang + header + separatedBody);
 }
 
 /* ─── Config loading ─────────────────────────────────────────────────────────────────────────────────────────────── */

@@ -8,7 +8,8 @@ Tooling is **software, not glue**. The doctrine:
 Related: 
 - [modules-and-imports.md](modules-and-imports.md) (the module behind the CLI)
 - [error-handling.md](error-handling.md) (exits)
-- [project-structure.md](project-structure.md) (`scripts/`/`bin/`).
+- [project-structure.md](project-structure.md) (`scripts/`/`bin/`)
+- [shell-and-environment.md](shell-and-environment.md) (the same doctrine in shell form)
 
 ## The Thin-CLI Pattern
 
