@@ -1,13 +1,13 @@
 # Jens Johnson • Developer Docs • Repository Overview
 
-How to maintain and manage this repository. This is the operator's manual; the _conventions_ the repo implements
+How this repository is managed and maintained. This is the operator's manual; the _conventions_ the repo implements
 live in the [style guide](../style-guide/README.md).
 
 ## What This Repository Is
 
 `jens-johnson/jens-johnson` is a personal monorepo serving four roles:
 
-1. **The GitHub profile README** (root [`README.md`](../../README.md); hand-crafted, tooling-exempt).
+1. **The GitHub profile `README`** (root [`README.md`](../../README.md); hand-crafted, tooling-exempt).
 2. **The developer style guide** ([`docs/style-guide/`](../style-guide)): the hub-and-spoke conventions docs.
 3. **The `@jens-johnson/style-guide` package**: shareable tooling configs + developer utilities, consumed by other
    repos (see [Consumption](#consumption)).
@@ -129,8 +129,8 @@ Everything ships from the single `@jens-johnson/style-guide` package:
 
 Install pinned to a release tag: `pnpm add -D github:jens-johnson/jens-johnson#v0.1.0` (or a range via
 `#semver:^0.1.0`); Release Please cuts the `vX.Y.Z` tags. No registry or auth is involved anywhere (the repo is
-public); publishing to npm remains a future flip of the `private` field. `.editorconfig` and `lefthook.yml` cannot be consumed via npm; copy this repo's root files as the
-canonical templates.
+public); publishing to npm remains a future flip of the `private` field. `.editorconfig` and `lefthook.yml` cannot be
+consumed via npm; copy this repo's root files as the canonical templates.
 
 ## GitHub & Releases
 
