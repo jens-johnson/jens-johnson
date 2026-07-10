@@ -27,7 +27,9 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm lint && pnpm typecheck"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "pnpm lint && pnpm typecheck && pnpm test"
   },
   "dependencies": {
     "@commitlint/config-conventional": "^21.2.0",
@@ -51,7 +53,8 @@
     "eslint": "^9.20.0",
     "lefthook": "^2.1.10",
     "prettier": "^3.5.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   },
   "peerDependencies": {
     "eslint": ">=9",

@@ -12,8 +12,8 @@
 # █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 # █████████████████████████████████████████████ .github/workflows/ci.yml ██████████████████████████████████████████████
 #
-# Continuous integration: mirrors the local check gate (lint + typecheck) on pushes and PRs to main, and validates PR
-# commit messages with commitlint.
+# Continuous integration: mirrors the local check gate (lint + typecheck + test) on pushes and PRs to main, and
+# validates PR commit messages with commitlint.
 #
 # ─── SEE ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 #
@@ -36,7 +36,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # The full local gate, mirrored: lint (eslint + prettier) then typecheck
+  # The full local gate, mirrored: lint (eslint + prettier), then typecheck, then vitest
   check:
     name: check
     runs-on: ubuntu-latest

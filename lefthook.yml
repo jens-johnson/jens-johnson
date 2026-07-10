@@ -37,9 +37,9 @@ commit-msg:
     commitlint:
       run: pnpm exec commitlint --edit {1}
 
-# Runs the full check gate (lint + typecheck) before anything leaves the machine; a red gate blocks the push.
+# Runs the full check gate (lint + typecheck + test) before anything leaves the machine; a red gate blocks the push.
 # Escape hatches (emergencies only): LEFTHOOK_EXCLUDE=<hook> for one hook, LEFTHOOK=0 for all
 pre-push:
   commands:
     check:
-      run: pnpm lint && pnpm typecheck
+      run: pnpm check
