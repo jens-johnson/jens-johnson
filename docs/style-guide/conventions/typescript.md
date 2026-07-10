@@ -198,4 +198,5 @@ type TUploadActivity = Pick<IStravaActivity, 'id' | 'name' | 'description'>;
 | No `any`                 | `@typescript-eslint/no-explicit-any` (error)                                                     |
 | Strict + extended checks | `tsconfig` baseline above; `pnpm typecheck` in the check gate                                    |
 | Type-only imports        | `verbatimModuleSyntax: true` makes them load-bearing                                             |
-| Maximal annotations      | Convention + review (no ESLint rule enforces annotating inferable locals; the guide is the gate) |
+| Return types             | `@typescript-eslint/explicit-function-return-type` (error); contextually-typed callbacks exempt  |
+| Maximal annotations      | Locals/params: convention + review (no ESLint rule enforces annotating inferable locals sanely)  |

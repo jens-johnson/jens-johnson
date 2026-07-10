@@ -232,15 +232,21 @@ function createStyleGuideBlocks() {
     /**
      * ═══ Layout Hardening ════════════════════════════════════════════════════════════════════════════════════════════
      *
-     * The object member-count threshold, re-enabled after prettierConfig. Deliberately objects-only: Prettier preserves
-     * multiline breaks inside object braces but always collapses imports and function params/args that fit the print
-     * width, so enforcing those would fight the formatter. `consistent: true` lets sub-threshold objects that Prettier
-     * width-breaks keep their newlines.
+     * Rules re-enabled after prettierConfig, which blanket-disables them:
+     *
+     * • `curly`: eslint-config-prettier disables it because the `multi-line`/`multi-or-nest` options conflict with
+     *   Prettier; the `all` option cannot, so the always-brace rule is re-asserted here (Prettier then formats the
+     *   braced body onto its own line).
+     * • The object member-count threshold. Deliberately objects-only: Prettier preserves multiline breaks inside
+     *   object braces but always collapses imports and function params/args that fit the print width, so enforcing
+     *   those would fight the formatter. `consistent: true` lets sub-threshold objects that Prettier width-breaks
+     *   keep their newlines.
      */
     {
       name: '@jens-johnson/style-guide/layout',
       plugins: { '@stylistic': stylisticPlugin },
       rules: {
+        curly: ['error', 'all'],
         '@stylistic/object-curly-newline': [
           'error',
           {
@@ -252,6 +258,28 @@ function createStyleGuideBlocks() {
           },
         ],
         '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
+      },
+    },
+
+    /**
+     * ═══ Maximal Annotations ═════════════════════════════════════════════════════════════════════════════════════════
+     *
+     * Declared functions state their return type explicitly. Contextually-typed function expressions (a callback
+     * passed to a typed parameter, i.e. a `describe`/`it` body or a `computed<T>` getter) are exempt; the context IS
+     * the annotation. Locals remain convention + review (see typescript.md); no rule enforces inferable locals sanely.
+     */
+    {
+      name: '@jens-johnson/style-guide/maximal-annotations',
+      files: ['**/*.ts', '**/*.mts', '**/*.cts', '**/*.tsx', '**/*.vue'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': [
+          'error',
+          {
+            allowExpressions: false,
+            allowTypedFunctionExpressions: true,
+            allowHigherOrderFunctions: true,
+          },
+        ],
       },
     },
   ];
