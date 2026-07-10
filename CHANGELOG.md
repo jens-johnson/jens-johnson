@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/jens-johnson/jens-johnson/compare/v0.4.0...v0.5.0) (2026-07-10)
+
+
+### ✨ Features
+
+* **file-header:** add an api handler file type with a request/response contract ([33b2158](https://github.com/jens-johnson/jens-johnson/commit/33b215876d35d27ca13eff652fc1b882532448a9))
+
 ## [0.4.0](https://github.com/jens-johnson/jens-johnson/compare/v0.3.1...v0.4.0) (2026-07-10)
 
 
