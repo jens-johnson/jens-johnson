@@ -115,6 +115,35 @@ async function readCaptureDate(file: File): Promise<string | null> {
 - **Polymorphic error shapes** (i.e. H3 errors carrying `statusMessage`/`data`) are unwrapped by a single
   `errorMessage(error: unknown): string` helper per domain, never ad-hoc at each call site.
 
+## API Upstream Calls
+
+An HTTP handler's awaited calls to external services (third-party APIs, storage) go through an **upstream guard**:
+a small server util that awaits the operation, lets deliberate framework errors (`createError`) pass through, and
+translates any unexpected rejection into a **502 with a human-readable message and the original failure as `cause`**.
+A dead upstream then surfaces as a clean gateway error instead of a raw 500 stack.
+
+```typescript
+// server/utils/http: the guard is one small, tested function
+export async function runUpstream<TResult>(operation: Promise<TResult>, statusMessage: string): Promise<TResult> {
+  try {
+    return await operation;
+  } catch (error: unknown) {
+    if (isError(error)) {
+      throw error;
+    }
+    throw createError({ statusCode: 502, statusMessage, cause: error });
+  }
+}
+
+// In a handler: every awaited external call names its failure
+const upload: IStravaUpload = await runUpstream(uploadTcx(tcx, activity), 'The Strava upload failed.');
+```
+
+- The guard wraps **external I/O only**; framework built-ins (`readBody`, `getQuery`) and internal guards throw their
+  own deliberate errors.
+- Every `@throws` a handler can produce (including the guard's 502) is listed in its JSDoc and its file-header
+  THROWS section.
+
 ## Message Style
 
 Error messages are **actionable**: state what is wrong *and* what to do about it.

@@ -51,6 +51,19 @@ const indents = lines.filter((line) => line.trim() !== '').map((line) => line.le
 const minimumIndent = indents.length ? Math.min(...indents) : 0;
 ```
 
+**Object destructures are annotated too**, with the source's named type when one exists or a short inline shape
+otherwise; a destructure is a declaration like any other:
+
+```typescript
+// ✅ DO: the named type documents what is being unwrapped
+const { activityId, tcx, elevationFeet }: IVertifixCommitRequest = parsed.request;
+const { theme, setTheme }: IUseThemeReturn = useTheme();
+const { values, positionals }: { values: ICliValues; positionals: string[] } = parsed;
+
+// ❌ AVOID: the unwrapped names carry no visible types
+const { activityId, tcx, elevationFeet } = parsed.request;
+```
+
 **Primitive constants annotate the wide type and skip `as const`**; the assertion is reserved for genuine literal
 narrowing:
 

@@ -90,7 +90,8 @@ A JSDoc block reads top-down in this order:
 5. **Kind tag**: `@function`, `@constant`, `@interface`, `@enum`, `@typedef`.
 6. `@param name - Description` (one per parameter, dash-separated; type braces only in plain JS, see below).
 7. `@returns Description`.
-8. `@throws Description` for expected thrown errors.
+8. `@throws Description` for expected thrown errors; API handlers list one per error response in the
+   `<status> when <condition>` form (mechanized by `jsdoc/require-throws`).
 9. `@example` for public utilities/composables with non-obvious usage.
 10. `@see` for cross-references and external links.
 11. `@todo` for tracked, intentional debt.

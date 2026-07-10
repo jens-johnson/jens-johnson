@@ -161,8 +161,8 @@ export function centerBanner(rawLines: string[]): string[] {
  * @internal
  * @function
  * @param fileName - The file name or path to center
- * @throws If the file name is too long to fit alongside the bars and padding
  * @returns The rendered bar line
+ * @throws If the file name is too long to fit alongside the bars and padding
  */
 export function fileNameBar(fileName: string): string {
   // Measure the file name and guard against overflow (6 chars reserved for the two spaces and minimal bars)
@@ -603,8 +603,8 @@ export function writeHeaderToFile(targetPath: string, header: string, fileType: 
  * @public
  * @function
  * @param explicitPath - An explicit config path to try first, if provided
- * @throws If no config file can be found
  * @returns The resolved config path and its parsed contents
+ * @throws If no config file can be found
  */
 export function loadHeaderConfig(explicitPath?: string): { path: string; config: IHeaderConfig } {
   // Search order: an explicit --config path, the working directory, then the repo root (four levels up from

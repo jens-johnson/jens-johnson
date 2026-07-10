@@ -148,6 +148,7 @@ function createStyleGuideBlocks() {
           },
         ],
         'jsdoc/require-description': 'warn',
+        'jsdoc/require-throws': 'warn',
       },
     },
 
