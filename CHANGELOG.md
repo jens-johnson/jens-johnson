@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/jens-johnson/jens-johnson/compare/v0.5.0...v0.6.0) (2026-07-10)
+
+
+### ✨ Features
+
+* **configs:** require jsdoc throws tags and codify the upstream-guard and destructure conventions ([349fc40](https://github.com/jens-johnson/jens-johnson/commit/349fc40f3e3ea146cde510898eabbdb3ba17be74))
+
 ## [0.5.0](https://github.com/jens-johnson/jens-johnson/compare/v0.4.0...v0.5.0) (2026-07-10)
 
 
