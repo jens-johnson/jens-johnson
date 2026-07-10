@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/jens-johnson/jens-johnson/compare/v0.3.0...v0.3.1) (2026-07-10)
+
+
+### ♻️ Refactors
+
+* **style-guide:** colocate unit tests with their subject files ([822071f](https://github.com/jens-johnson/jens-johnson/commit/822071f02c3d3c85640d0e4b37660fc6f7c2017a))
+
 ## [0.3.0](https://github.com/jens-johnson/jens-johnson/compare/v0.2.0...v0.3.0) (2026-07-10)
 
 
