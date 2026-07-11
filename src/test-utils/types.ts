@@ -11,21 +11,22 @@
  *                              ████▀     ████▀
  *
  * █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
- * ███████████████████████████████████████████████ commitlint.config.js ████████████████████████████████████████████████
+ * ██████████████████████████████████████████████ src/test-utils/types.ts ██████████████████████████████████████████████
  *
- * This repo's commitlint config; the shared factory plus the repo scope enum.
+ * Symbol metadata contract: the readable name and optional description registered for an exported symbol.
  *
  * █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
  */
 
-import { createCommitlintConfig } from './src/configs/commitlint/index.mjs';
-
 /**
- * This repo's commitlint config: the shared baseline with the repo scope enum.
+ * An interface representing the human-readable metadata registered for an exported symbol
  * @public
- * @default
- * @constant
+ * @interface
  */
-export default createCommitlintConfig({
-  scopes: ['style-guide', 'file-header', 'test-utils', 'configs', 'docs', 'deps', 'ci', 'release', 'repo'],
-});
+export interface ISymbolMetadata {
+  /* The readable display name (i.e. "Build Jenscraft Live Metrics") */
+  name: string;
+
+  /* An optional one-line description of what the symbol does */
+  description?: string;
+}

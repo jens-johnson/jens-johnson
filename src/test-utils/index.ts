@@ -11,21 +11,13 @@
  *                              ████▀     ████▀
  *
  * █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
- * ███████████████████████████████████████████████ commitlint.config.js ████████████████████████████████████████████████
+ * ██████████████████████████████████████████████ src/test-utils/index.ts ██████████████████████████████████████████████
  *
- * This repo's commitlint config; the shared factory plus the repo scope enum.
+ * Barrel for the test-utils module: the symbol metadata registry and the test-file-name resolver.
  *
  * █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
  */
 
-import { createCommitlintConfig } from './src/configs/commitlint/index.mjs';
-
-/**
- * This repo's commitlint config: the shared baseline with the repo scope enum.
- * @public
- * @default
- * @constant
- */
-export default createCommitlintConfig({
-  scopes: ['style-guide', 'file-header', 'test-utils', 'configs', 'docs', 'deps', 'ci', 'release', 'repo'],
-});
+export * from './file-name';
+export * from './symbol';
+export * from './types';

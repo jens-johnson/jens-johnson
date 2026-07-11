@@ -37,10 +37,24 @@ Related:
 
 ## Test Shape
 
-- **`describe(subject)`** blocks group by function/unit; **`it('...')` titles are behavior sentences** that read as
-  specifications: `it('ramps altitude linearly from zero to the target gain in meters', ...)`.
-- **Fixtures are typed constants** declared at the top under a `─── Fixtures ───` divider, with member comments
-  where shapes are non-obvious.
+Suites nest two `describe` levels so the tree mirrors the module layout: **the outer block names the source file, the
+inner block names the symbol under test.** Both titles are derived, not hand-typed, from the
+[`@jens-johnson/style-guide/test-utils`](#the-test-utils-helpers) helpers:
+
+- **Outer: `describe(getTestFileName(import.meta.url))`** resolves the co-located test's URL to the source file's
+  [file-header](file-headers.md) banner label (`#composables/use-x/utils.ts` in an aliased app, `src/foo/utils.ts` in a
+  plain library). One outer block per file.
+- **Inner: `describe(symbolName(subject))`** titles by the exported symbol itself. `symbolName` returns the readable
+  name a source file registers via [`defineSymbol`](#the-test-utils-helpers) (i.e. `"Build Jenscraft Live Metrics"`),
+  falling back to the symbol's intrinsic `.name`. Pass the imported symbol, never a string literal.
+- **`it('...')` titles are behavior sentences** that read as specifications:
+  `it('ramps altitude linearly from zero to the target gain in meters', ...)`.
+- **Every `describe` / `it` / hook callback carries an explicit return type** (`(): void`, or
+  `async (): Promise<void>`). Test callbacks are contextually typed, so the annotation is redundant to the compiler; it
+  is required for parity with production's [maximal-annotation](typescript.md) rule, not inference.
+- **Fixtures are typed constants** declared at the top under a `─── Fixtures ───` divider, each carrying a full JSDoc
+  block (`@internal` + `@constant`) like any script-scope declaration; drop them into a `─── Metadata ───`-style
+  section only when a helper needs one.
 - Extraction helpers used by assertions get JSDoc like any function.
 - Assertions favor **exact values over shape-matching**: computed expectations (`expect(altitudes).toEqual([0, 15.24, 30.48])`)
   document the math they verify.
@@ -48,6 +62,11 @@ Related:
 ```typescript
 /* ─── Fixtures ───────────────────────────────────────────────────────────────────────────────────────────────────── */
 
+/**
+ * A three-trackpoint activity with a known distance ramp; the altitude assertions are hand-checkable against it
+ * @internal
+ * @constant
+ */
 const activity: ITcxSourceActivity = {
   start_date: '2026-03-10T02:11:09.000Z',
   elapsed_time: 100,
@@ -56,20 +75,46 @@ const activity: ITcxSourceActivity = {
 
 /* ─── Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────── */
 
-describe('buildTcx', () => {
-  it('ramps altitude linearly from zero to the target gain in meters', () => {
-    // Build a TCX with a 100ft target gain over three trackpoints
-    const streams: TTcxStreams = { time: { data: [0, 50, 100] }, distance: { data: [0, 500, 1000] } };
-    const tcx: string = buildTcx(activity, streams, 100);
+describe(getTestFileName(import.meta.url), (): void => {
+  describe(symbolName(buildTcx), (): void => {
+    it('ramps altitude linearly from zero to the target gain in meters', (): void => {
+      // Build a TCX with a 100ft target gain over three trackpoints
+      const streams: TTcxStreams = { time: { data: [0, 50, 100] }, distance: { data: [0, 500, 1000] } };
+      const tcx: string = buildTcx(activity, streams, 100);
 
-    // The altitude samples ramp 0% -> 50% -> 100% of the gain
-    expect(extractNumbers(tcx, 'AltitudeMeters')).toEqual([0, 15.24, 30.48]);
+      // The altitude samples ramp 0% -> 50% -> 100% of the gain
+      expect(extractNumbers(tcx, 'AltitudeMeters')).toEqual([0, 15.24, 30.48]);
+    });
   });
+});
+```
+
+The source file registers its readable name at the bottom, under a `─── Metadata ───` divider, so the suite titles stay
+in sync with the symbol:
+
+```typescript
+/* ─── Metadata ───────────────────────────────────────────────────────────────────────────────────────────────────── */
+
+// Register a readable name/description so the unit suites can title their describe blocks from the source symbol
+defineSymbol(buildTcx, {
+  name: 'Build TCX Document',
+  description: 'Renders an activity and its streams into a Garmin TCX XML document.',
 });
 ```
 
 - Test bodies follow the same [execution-comment](comments.md#execution-comments) style as production code; arrange
   and assert blocks are commented, not labeled with bare `// Arrange` boilerplate.
+
+### The test-utils helpers
+
+[`@jens-johnson/style-guide/test-utils`](../../../src/test-utils) ships the three helpers the shape above depends on, so
+every consumer titles suites identically instead of re-deriving file names by hand:
+
+| Helper                              | Role                                                                                              |
+|-------------------------------------|---------------------------------------------------------------------------------------------------|
+| `getTestFileName(import.meta.url)`  | The co-located test's URL → its source file's banner label (alias-prefixed app path, or `src/…`).  |
+| `defineSymbol(fn, { name, description })` | Registers a readable name/description on a source symbol; returns it unchanged. Called in the source file's `─── Metadata ───` block. |
+| `symbolName(fn)` / `symbolDescription(fn)` | Read the registered metadata back (name falls back to `fn.name`, then `"anonymous"`).         |
 
 ## Failure-Path Coverage
 
