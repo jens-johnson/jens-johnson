@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/jens-johnson/jens-johnson/compare/v0.9.0...v0.9.1) (2026-07-11)
+
+
+### 📝 Docs
+
+* **style-guide:** note the ssr bundling caveat for the symbol registry ([cf8dd0e](https://github.com/jens-johnson/jens-johnson/commit/cf8dd0e15df8865cc4b491291dd6781bab2c9439))
+
 ## [0.9.0](https://github.com/jens-johnson/jens-johnson/compare/v0.8.1...v0.9.0) (2026-07-11)
 
 
