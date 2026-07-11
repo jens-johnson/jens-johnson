@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/jens-johnson/jens-johnson/compare/v0.8.1...v0.9.0) (2026-07-11)
+
+
+### ✨ Features
+
+* **test-utils:** add the test-file-name resolver and symbol metadata registry ([d7181fe](https://github.com/jens-johnson/jens-johnson/commit/d7181fe43a4d9d1e24b24e1c84e5399dea2f0cbf))
+
 ## [0.8.1](https://github.com/jens-johnson/jens-johnson/compare/v0.8.0...v0.8.1) (2026-07-11)
 
 
