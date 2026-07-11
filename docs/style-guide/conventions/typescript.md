@@ -31,6 +31,25 @@ Related:
 
 Typechecking runs as its own gate (`pnpm typecheck` via `tsc --noEmit` / `vue-tsc`), separate from the build.
 
+## Enums and Derived Unions (Mandate)
+
+**A string-literal union that names an enumerable domain is always derived from an enum**; hand-written unions are
+reserved for genuinely open shapes (template-literal patterns, external contracts you don't own):
+
+```typescript
+// ✅ DO: the enum is the domain, the union is derived
+export enum PadPreset {
+  lg = 'lg',
+  md = 'md',
+  none = 'none',
+  sm = 'sm',
+}
+export type TPadPreset = `${PadPreset}`;
+
+// ❌ AVOID: a free-floating literal union invites drift
+type TPadPreset = 'sm' | 'md' | 'lg' | 'none';
+```
+
 ## Maximal Annotations
 
 **Annotate everything**: local variables, function parameters, return types, and callback parameters *and* returns,

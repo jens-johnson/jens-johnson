@@ -36,25 +36,27 @@ non-trivial:
 
 /* ─── Imports ─────────────────────────────────────────────────────────────────────────────────────────────────── */
 
-import type { TTheme } from '~/composables/use-theme';
+import type { ICardProps } from './types';
 
 /* ─── Props ───────────────────────────────────────────────────────────────────────────────────────────────────── */
 
-interface Props {
-  /* The root element tag */
-  as?: string;
-
-  /* The inner padding preset */
-  pad?: TPadPreset;
-}
-
-const props: TPropsWithDefaults<Props, 'as' | 'pad'> = withDefaults(defineProps<Props>(), {
+/**
+ * Component props; the root element tag and the inner padding preset
+ * @internal
+ * @constant
+ */
+const props: TPropsWithDefaults<ICardProps, 'as' | 'pad'> = withDefaults(defineProps<ICardProps>(), {
   as: 'div',
   pad: 'md',
 });
 
 /* ─── State ───────────────────────────────────────────────────────────────────────────────────────────────────── */
 
+/**
+ * Whether the pointer is currently over the card
+ * @internal
+ * @constant
+ */
 const isActive: Ref<boolean> = ref(false);
 
 /* ─── Handlers ────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -72,8 +74,14 @@ function onMouseEnter(): void {
 </template>
 ```
 
-- **Props are `interface Props`** (the documented [naming exemption](naming.md#type-prefixes)), members commented
-  like any shape, defaults via `withDefaults`.
+- **Every script-scope declaration carries a JSDoc block** (`@internal` + `@constant`), including composable
+  destructures, computeds, and local constants; mechanized by the SFC-scoped `jsdoc/require-jsdoc` context.
+- **A component is a folder module**: `index.vue` plus co-located `types.ts` (the `I<Component>Props` interface,
+  enums, derived unions), `constants.ts` (named, typed magic values), and `utils.ts` + `utils.test.ts` when the
+  component owns pure logic (i.e. the spark-line geometry builder). The SFC imports them via `./types`,
+  `./constants`, `./utils`. The inline `interface Props` idiom is retired; props interfaces are named
+  `I<Component>Props`.
+- **Props members are commented** like any shape, blank line between members, defaults via `withDefaults`.
 - **The `props` const is annotated** with `TPropsWithDefaults<TProps, TDefaulted>` (from
   `@jens-johnson/style-guide/types/vue`): the raw props interface with the defaulted keys promoted to required,
   wrapped readonly. Maximal annotations do not stop at component boundaries.

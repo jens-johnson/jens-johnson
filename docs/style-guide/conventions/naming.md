@@ -27,14 +27,15 @@ Related:
 | Test files               | `<file>.test.ts`, in band | `utils.test.ts` (beside `utils.ts`)          |
 
 **Framework exceptions** override this table where a contract demands exact names (i.e. Nuxt Content prose
-components like `ProseH2.vue` must be `PascalCase` filenames; Vue's `interface Props`; module augmentations).
+components like `ProseH2.vue` must be `PascalCase` filenames; module augmentations).
 
 ## Type Prefixes
 
 - **Interfaces are `I`-prefixed**, **type aliases are `T`-prefixed**; the prefix telegraphs what kind of symbol
   you're holding at every use site.
-- **Exemptions** (deliberate): Vue component `interface Props` (the Vue idiom), and interfaces augmenting an external
-  module's declaration, whose names must match the library's to merge.
+- **Exemption** (deliberate): interfaces augmenting an external module's declaration, whose names must match the
+  library's to merge. (Component props interfaces are `I<Component>Props` in the component's co-located `types.ts`;
+  the old inline `interface Props` idiom is retired.)
 - Enum **names** are plain `PascalCase` (no `E` prefix); enum **members** follow the domain: lowercase when they
   mirror lowercase wire values (`block = 'block'`), `PascalCase` when they are code-facing labels
   (`Computer = 'Computer'`). Member and value should mirror each other; see
@@ -134,7 +135,7 @@ descriptively (`import { importX as importXPlugin } from 'eslint-plugin-import-x
 The I/T prefixes **are auto-enforced**; the known exemptions pass through explicitly rather than disabling the rule:
 
 ```javascript
-// Enforce I/T prefixes; the Vue `Props` idiom is exempted via filter
+// Enforce I/T prefixes
 {
   name: 'style-guide/type-naming',
   rules: {
@@ -144,7 +145,6 @@ The I/T prefixes **are auto-enforced**; the known exemptions pass through explic
         selector: 'interface',
         format: ['PascalCase'],
         prefix: ['I'],
-        filter: { regex: '^Props$', match: false },
       },
       {
         selector: 'typeAlias',

@@ -102,7 +102,6 @@ function createStyleGuideBlocks() {
             selector: 'interface',
             format: ['PascalCase'],
             prefix: ['I'],
-            filter: { regex: '^Props$', match: false },
           },
           {
             selector: 'typeAlias',
@@ -353,6 +352,35 @@ export function createFrameworkEslintConfig(...overrides) {
               next: '*',
             },
           ],
+        ],
+      },
+    },
+
+    /**
+     * ═══ Vue Script-Scope JSDoc ══════════════════════════════════════════════════════════════════════════════════════
+     *
+     * Every script-scope declaration in an SFC (props consts, composable destructures, computeds, local constants)
+     * carries a JSDoc block; the `Program > VariableDeclaration` context scopes the requirement to the top level of
+     * the script block without touching function-local declarations.
+     */
+    {
+      name: '@jens-johnson/style-guide/vue-script-jsdoc',
+      files: ['**/*.vue'],
+      rules: {
+        'jsdoc/require-jsdoc': [
+          'warn',
+          {
+            require: {
+              FunctionDeclaration: true,
+              ClassDeclaration: true,
+            },
+            contexts: [
+              'TSInterfaceDeclaration',
+              'TSTypeAliasDeclaration',
+              'TSEnumDeclaration',
+              'Program > VariableDeclaration',
+            ],
+          },
         ],
       },
     },
