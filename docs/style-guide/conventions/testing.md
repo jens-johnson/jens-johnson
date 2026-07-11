@@ -116,6 +116,15 @@ every consumer titles suites identically instead of re-deriving file names by ha
 | `defineSymbol(fn, { name, description })` | Registers a readable name/description on a source symbol; returns it unchanged. Called in the source file's `─── Metadata ───` block. |
 | `symbolName(fn)` / `symbolDescription(fn)` | Read the registered metadata back (name falls back to `fn.name`, then `"anonymous"`).         |
 
+**Bundling caveat.** `getTestFileName` is only ever imported by `*.test.ts` files, so it never enters a production
+bundle; importing it from this package is always safe. The symbol registry is different: `defineSymbol` runs in
+production **source** (the `─── Metadata ───` block), so importing it pulls this package's raw TypeScript into the
+consumer's build graph. That is fine for a plain-Node consumer, but a bundler that will not transpile a dependency's
+`.ts` in every pass (i.e. the Nuxt/Nitro **prerenderer**) chokes on it. In those apps, keep a small **co-located** copy
+of `defineSymbol` / `symbolName` in the app (it compiles with the app's own source in every pass) and import only
+`getTestFileName` from this package. `symbolName` and `defineSymbol` must resolve to the **same** module instance to
+share the registry, so pick one home per app and use it on both sides.
+
 ## Failure-Path Coverage
 
 Result-union validators and error paths are first-class test subjects: the `{ ok: false }` branches, boundary
