@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/jens-johnson/jens-johnson/compare/v0.8.0...v0.8.1) (2026-07-11)
+
+
+### 📝 Docs
+
+* **style-guide:** mandate enums for all closed string domains and headers for template-only vue ([9fa3c7e](https://github.com/jens-johnson/jens-johnson/commit/9fa3c7e187779b578259862d48318d4698438cde))
+
 ## [0.8.0](https://github.com/jens-johnson/jens-johnson/compare/v0.7.0...v0.8.0) (2026-07-11)
 
 
