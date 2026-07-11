@@ -81,6 +81,11 @@ function onMouseEnter(): void {
   component owns pure logic (i.e. the spark-line geometry builder). The SFC imports them via `./types`,
   `./constants`, `./utils`. The inline `interface Props` idiom is retired; props interfaces are named
   `I<Component>Props`.
+- **Constant-extraction threshold**: semantic magnitudes (pixel distances, durations, thresholds, SSR fallbacks like
+  a hero height) get named constants once there are two or more related values, or a co-located `constants.ts`.
+  **Single-use easing/animation coefficients inside one decorative formula stay inline** (`0.02 + progress * 0.22`
+  reads clearer than `MARK_OPACITY_BASE + progress * MARK_OPACITY_GAIN`); the point of naming is clarity, not literal
+  zero-magic-numbers.
 - **Props members are commented** like any shape, blank line between members, defaults via `withDefaults`.
 - **The `props` const is annotated** with `TPropsWithDefaults<TProps, TDefaulted>` (from
   `@jens-johnson/style-guide/types/vue`): the raw props interface with the defaulted keys promoted to required,

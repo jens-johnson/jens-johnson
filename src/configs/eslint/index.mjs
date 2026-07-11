@@ -130,14 +130,15 @@ function createStyleGuideBlocks() {
     /**
      * ═══ JSDoc ═══════════════════════════════════════════════════════════════════════════════════════════════════════
      *
-     * JSDoc settings and configurations
+     * JSDoc presence and shape. These are `error`, not `warn`: the guide treats documentation as required, and a
+     * warn-level rule is invisible to a `pnpm check` gate that only fails on errors, so violations silently ship.
      */
     {
       name: '@jens-johnson/style-guide/jsdoc',
       plugins: { jsdoc: jsdocPlugin },
       rules: {
         'jsdoc/require-jsdoc': [
-          'warn',
+          'error',
           {
             require: {
               FunctionDeclaration: true,
@@ -146,8 +147,8 @@ function createStyleGuideBlocks() {
             contexts: ['TSInterfaceDeclaration', 'TSTypeAliasDeclaration', 'TSEnumDeclaration'],
           },
         ],
-        'jsdoc/require-description': 'warn',
-        'jsdoc/require-throws': 'warn',
+        'jsdoc/require-description': 'error',
+        'jsdoc/require-throws': 'error',
       },
     },
 
@@ -368,7 +369,7 @@ export function createFrameworkEslintConfig(...overrides) {
       files: ['**/*.vue'],
       rules: {
         'jsdoc/require-jsdoc': [
-          'warn',
+          'error',
           {
             require: {
               FunctionDeclaration: true,

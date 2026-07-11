@@ -291,11 +291,13 @@ Files with logical groupings (constants, helpers, assembly, I/O, ...) separate t
 | Concern                            | Tooling                                                                                                                            |
 |------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | 120-char limit (comments included) | Prettier `printWidth: 120` + ESLint `max-len` when enabled                                                                         |
-| JSDoc presence/shape               | `eslint-plugin-jsdoc`: `require-jsdoc`, `require-description`, `no-types` (adopted in new configs) |
+| JSDoc presence/shape               | `eslint-plugin-jsdoc`: `require-jsdoc`, `require-description`, `require-throws` at **error** (a warn-level rule is invisible to a check gate that only fails on errors) |
 | Type duplication in JSDoc          | `jsdoc/no-types` (TypeScript files only; plain JS requires types instead)                                                                                                                   |
 | File headers                       | The [header generator](file-headers.md#tooling); never hand-formatted                                                              |
 | Comment reflow                     | Prettier does not rewrap comment prose; authors own comment line breaks                                                            |
 
-`eslint-plugin-jsdoc` is the standard enforcement vehicle: `jsdoc/require-jsdoc`, `jsdoc/require-description`, and
-`jsdoc/no-types` are adopted in new configs (canonical block in [tooling.md](tooling.md)); existing repos migrate as
-they next touch their lint setup.
+`eslint-plugin-jsdoc` is the standard enforcement vehicle: `jsdoc/require-jsdoc`, `jsdoc/require-description`,
+`jsdoc/require-throws`, and `jsdoc/no-types`. The presence rules run at **`error`**, not `warn`: documentation is
+required, and a warn-level rule does not fail `pnpm check` (which exits non-zero only on errors), so violations ship
+silently under a green gate. The SFC-scoped `require-jsdoc` context also covers every script-scope declaration in a
+`.vue` file.
