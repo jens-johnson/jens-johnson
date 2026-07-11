@@ -33,8 +33,11 @@ Typechecking runs as its own gate (`pnpm typecheck` via `tsc --noEmit` / `vue-ts
 
 ## Enums and Derived Unions (Mandate)
 
-**A string-literal union that names an enumerable domain is always derived from an enum**; hand-written unions are
-reserved for genuinely open shapes (template-literal patterns, external contracts you don't own):
+**Every closed string-literal union that names an enumerable domain is derived from an enum** — including status
+and state strings that mirror a wire/content contract (the enum's `${Enum}` yields the identical literal type, so
+the contract is unchanged). Hand-written unions are reserved only for **genuinely open** shapes: a union that
+includes `| string`, or a template-literal pattern (`` `${number}px` ``). A closed set of known members is always
+an enum:
 
 ```typescript
 // ✅ DO: the enum is the domain, the union is derived

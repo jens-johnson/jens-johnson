@@ -61,7 +61,10 @@ The banner content is identical everywhere; only the surrounding comment syntax 
 ### Notes:
 
 - **Vue**: the header is a `/** */` block placed **inside** `<script setup lang="ts">` (the generator inserts it
-  right after the opening tag, or creates the script block if the file has none).
+  right after the opening tag, or creates the script block if the file has none). A **template-only** component
+  with no logic (a slot pass-through, i.e. a Nuxt Content `ProseP`/`ProseCode` override) still gets a header; the
+  generator adds an otherwise-empty `<script setup lang="ts">` block to host it. Every source file carries a
+  header, no exceptions.
 - **Shell / Node scripts** with a shebang keep the `#!...` line first; the header follows it.
 
 ## Geometry
