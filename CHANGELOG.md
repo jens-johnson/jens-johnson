@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/jens-johnson/jens-johnson/compare/v0.7.0...v0.8.0) (2026-07-11)
+
+
+### ✨ Features
+
+* **configs:** promote the jsdoc presence rules to error ([e67ace7](https://github.com/jens-johnson/jens-johnson/commit/e67ace7fecfe2ae2a792f65595e50fbc3e678aa1))
+
 ## [0.7.0](https://github.com/jens-johnson/jens-johnson/compare/v0.6.0...v0.7.0) (2026-07-11)
 
 
