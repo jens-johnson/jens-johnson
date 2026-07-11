@@ -38,7 +38,7 @@ Related:
 ## Test Shape
 
 - **`describe(subject)`** blocks group by function/unit; **`it('...')` titles are behavior sentences** that read as
-  specifications: `it('ramps altitude linearly from zero to the target gain in metres', ...)`.
+  specifications: `it('ramps altitude linearly from zero to the target gain in meters', ...)`.
 - **Fixtures are typed constants** declared at the top under a `─── Fixtures ───` divider, with member comments
   where shapes are non-obvious.
 - Extraction helpers used by assertions get JSDoc like any function.
@@ -57,7 +57,7 @@ const activity: ITcxSourceActivity = {
 /* ─── Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────── */
 
 describe('buildTcx', () => {
-  it('ramps altitude linearly from zero to the target gain in metres', () => {
+  it('ramps altitude linearly from zero to the target gain in meters', () => {
     // Build a TCX with a 100ft target gain over three trackpoints
     const streams: TTcxStreams = { time: { data: [0, 50, 100] }, distance: { data: [0, 500, 1000] } };
     const tcx: string = buildTcx(activity, streams, 100);
