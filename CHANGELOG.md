@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/jens-johnson/jens-johnson/compare/v0.6.0...v0.7.0) (2026-07-11)
+
+
+### ✨ Features
+
+* **configs:** require jsdoc on sfc script-scope declarations and retire the props exemption ([d791659](https://github.com/jens-johnson/jens-johnson/commit/d7916598e13b1d5b9289e5a55299ec1adc958ce3))
+
+
+### 📝 Docs
+
+* **style-guide:** put throws before returns in the jsdoc tag order and adopt meter spelling ([d864e65](https://github.com/jens-johnson/jens-johnson/commit/d864e65ed7c6767eb28aba2cd74fdf0e21647c7a))
+
 ## [0.6.0](https://github.com/jens-johnson/jens-johnson/compare/v0.5.0...v0.6.0) (2026-07-10)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@jens-johnson/style-guide",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "description": "Jens Johnson's opinionated style guide: conventions docs, shareable tooling configs, and developer utilities",
