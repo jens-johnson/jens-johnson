@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.9.2](https://github.com/jens-johnson/jens-johnson/compare/v0.9.1...v0.9.2) (2026-07-13)
+
+
+### 🐛 Bug Fixes
+
+* **file-header:** alias real -f paths in the generated banner ([85a6a77](https://github.com/jens-johnson/jens-johnson/commit/85a6a77700c04e264d37a61892dd37578fec0fc8))
+
+
+### 📝 Docs
+
+* **style-guide:** allow imperative loops on performance-critical hot paths ([95c278d](https://github.com/jens-johnson/jens-johnson/commit/95c278df4d374fcfc1eabcb86d093738c7a65748))
+
 ## [0.9.1](https://github.com/jens-johnson/jens-johnson/compare/v0.9.0...v0.9.1) (2026-07-11)
 
 
