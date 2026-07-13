@@ -279,6 +279,18 @@ describe('buildHeaderContent', () => {
     expect(lines).toContain('A minimal example file.');
   });
 
+  it('normalizes a real filesystem path to its banner alias in the filename bar', () => {
+    const lines: string[] = buildHeaderContent(
+      { ...minimalSpec, file: 'server/utils/foo.ts' },
+      config,
+      FileType.module,
+    );
+
+    // A real path passed via -f renders as its #-prefixed alias, never the raw relative path
+    expect(lines).toContain(fileNameBar('#server/utils/foo.ts'));
+    expect(lines).not.toContain(fileNameBar('server/utils/foo.ts'));
+  });
+
   it('omits sections whose spec fields are unpopulated', () => {
     const lines: string[] = buildHeaderContent(minimalSpec, config, FileType.module);
 

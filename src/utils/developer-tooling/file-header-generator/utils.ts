@@ -26,6 +26,7 @@ import { parseArgs } from 'node:util';
 import type { FontName } from 'figlet';
 import figlet from 'figlet';
 
+import { toBannerLabel } from './banner-label';
 import {
   ARG_KEYS,
   BAR_CHARACTER,
@@ -456,14 +457,16 @@ export function detectCommentStyle(fileName: string): CommentStyle {
  * @returns The header's inner content lines
  */
 export function buildHeaderContent(spec: IHeaderSpec, config: IHeaderConfig, fileType: FileType): string[] {
-  // The banner, filename bar, and wrapped description that open every header
+  // The banner, filename bar, and wrapped description that open every header. The filename is normalized to its
+  // banner alias (i.e. a real `server/utils/foo.ts` path passed via `-f` renders as `#server/utils/foo.ts`) while the
+  // spec's `file` stays the real path for detection and the write target; an already-aliased label is left unchanged.
   const openingLines: string[] = [
     SEPARATOR_CHARACTER_BLOCK,
     '',
     ...centerBanner(config.banner),
     '',
     SEPARATOR_CHARACTER_BLOCK,
-    fileNameBar(spec.file),
+    fileNameBar(toBannerLabel(spec.file)),
     '',
     ...wrap(spec.description),
   ];
