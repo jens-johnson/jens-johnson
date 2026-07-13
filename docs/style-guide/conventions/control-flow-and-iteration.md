@@ -29,8 +29,10 @@ for (const item in bar) {
 const results: string[] = bar.map((item: IBarItem): string => transform(item));
 ```
 
-Imperative loops (`for...of`, `while`) are tolerated only where early termination or streaming makes the functional
-form genuinely awkward; when one survives, it gets an execution comment justifying it.
+Imperative loops (`for...of`, `while`, indexed `for`) are tolerated only where early termination, streaming, or a
+performance-critical hot path (i.e. a per-frame canvas render loop, where allocating intermediate arrays each frame is
+too costly) makes the functional form genuinely awkward or wasteful; when one survives, it gets an execution comment
+justifying it.
 
 ### Choosing the Method
 
