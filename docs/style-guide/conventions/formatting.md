@@ -93,7 +93,8 @@ fight the formatter on every run. Prettier's 120-column behavior is the rule. Th
 
 - **One blank line** between top-level declarations (functions, constants, etc.).
 - **One blank line** between members of interfaces, enums, and constant maps (see
-  [comments.md](comments.md#member-comments)).
+  [comments.md](comments.md#member-comments)); those members are also sorted, per
+  [typescript.md](typescript.md#member-ordering).
 - **One blank line** between execution blocks inside a function body.
 - **No consecutive blank lines** inside function bodies.
 - **One blank line before a module-scope section divider in Prettier-owned files** (TS/JS/Vue), one after it;
