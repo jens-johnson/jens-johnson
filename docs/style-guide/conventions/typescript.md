@@ -159,6 +159,59 @@ type TCommentStyle = `${CommentStyle}`;
 - Internal code branches on the enum (`CommentStyle.hash`); boundary-facing types accept the `T` union.
 - Member casing follows the domain (see [naming.md](naming.md#type-prefixes)); member and value mirror each other.
 
+## Member Ordering
+
+**Members of interfaces, type literals, and enums are sorted lexicographically by name.** The examples throughout
+this guide already do it; this is the rule they were quietly following.
+
+```typescript
+// ✅ DO: found by jumping, not by scanning
+export interface IMatchSettings {
+  cutthroatTimeCap: number;
+
+  expediteEnabled: boolean;
+
+  gameType: GameType;
+
+  targetScore: number;
+}
+
+// ❌ AVOID: ordered by the author's train of thought
+export interface IMatchSettings {
+  gameType: GameType;
+  targetScore: number;
+  cutthroatTimeCap: number;
+  expediteEnabled: boolean;
+}
+```
+
+- **Why**: a declaration is reference material, read far more often than it is written. A sorted shape is searched by
+  jumping to where a name must be; an unsorted one is searched by reading all of it. Two people adding fields
+  independently also land in the same place instead of colliding at the bottom of the block.
+- **Sort by codepoint**, which is what a linter or an editor's sort action produces: `TIMEOUT` precedes
+  `TIME_CAP_REACHED`, because `O` (`0x4F`) sorts before `_` (`0x5F`). Resist hand-correcting that to read more
+  naturally — an ordering a tool can reproduce is worth more than one that matches intuition.
+- **The discriminant of a discriminated union sorts with everything else**, so `type` frequently lands last. The
+  compiler narrows on the field, not on its position.
+- Members stay one blank line apart, per [formatting.md](formatting.md#blank-lines).
+
+### Where Order Is Semantic
+
+Ordering applies to **named members whose order carries no meaning**. It does not apply where position *is* the
+contract:
+
+| Shape                                       | Sorted | Why                                       |
+|---------------------------------------------|--------|-------------------------------------------|
+| Interface and type-literal members          | ✅      | Addressed by name, never by position      |
+| String enum members                         | ✅      | The member and its value mirror each other |
+| Numeric or implicitly-valued enum members   | ❌      | Reordering silently renumbers them        |
+| Tuple elements, function parameters         | ❌      | Position is the contract                  |
+| Ordered configuration (i.e. pipeline steps) | ❌      | The sequence *is* the behavior            |
+
+> **Watch what the order feeds.** Where an enum is projected into something order-sensitive — a Postgres
+> `CREATE TYPE ... AS ENUM(...)`, a serialized index — sorting the members rewrites that artifact too. Cheap before it
+> ships; a migration afterwards.
+
 ## `any`, `unknown`, and Narrowing
 
 - **`any` is banned** (`@typescript-eslint/no-explicit-any`); use `unknown` and narrow.

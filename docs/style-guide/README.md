@@ -111,6 +111,7 @@ The one-glance defaults. Each links to its spoke for rationale and examples.
 | Unions        | Derive from enums: `enum Foo { ... }` + `type TFoo =` `` `${Foo}` ``       |
 | Type imports  | `import type { ... }` for type-only imports                                |
 | Result shapes | Discriminated unions: `{ ok: true; value: T } \| { ok: false }`            |
+| Member order  | Interface, type-literal, and string-enum members sorted lexicographically   |
 
 ### Code Shape
 
