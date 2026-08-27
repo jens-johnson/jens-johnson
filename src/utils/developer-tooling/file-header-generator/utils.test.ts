@@ -351,7 +351,7 @@ describe('renderHeader', () => {
     expect(header.endsWith(' */\n')).toBe(true);
   });
 
-  it('keeps every rendered line within the 120-character width budget', () => {
+  it('keeps every rendered line within the width budget', () => {
     const header: string = renderHeader(
       {
         ...minimalSpec,
@@ -365,8 +365,31 @@ describe('renderHeader', () => {
       .split('\n')
       .map((line: string): number => normalizeStringLength(line));
 
-    // Hash-commented content lines are `# ` + up to 117 characters = at most 119
     expect(Math.max(...widths)).toBeLessThanOrEqual(config.width);
+  });
+
+  // A rule sized for one comment style is short or long in another, because each prefixes a different number of
+  // characters to every line; the inner width has to be derived from the style rather than fixed
+  it.each([
+    ['block', 'deploy.ts'],
+    ['hash', 'deploy.sh'],
+  ])('draws full-width rules to exactly the configured width in %s comments', (_style, file) => {
+    const header: string = renderHeader(
+      {
+        ...minimalSpec,
+        file,
+        usage: 'run it',
+      },
+      config,
+    );
+    const ruleWidths: number[] = header
+      .trimEnd()
+      .split('\n')
+      .filter((line: string): boolean => line.includes('█'.repeat(10)) || line.includes('─'.repeat(10)))
+      .map((line: string): number => normalizeStringLength(line));
+
+    expect(ruleWidths.length).toBeGreaterThan(0);
+    expect(new Set(ruleWidths)).toEqual(new Set([config.width]));
   });
 });
 

@@ -31,6 +31,7 @@ import {
   ARG_KEYS,
   BAR_CHARACTER,
   CLI_OPTIONS,
+  COMMENT_PREFIX_LENGTHS,
   DEFAULT_BANNER_FONT,
   EMIT_KEYS,
   FILE_TYPE_BY_EXTENSION,
@@ -42,7 +43,6 @@ import {
   MODULE_DIRECTORY,
   PROP_KEYS,
   RULE_CHARACTER,
-  SEPARATOR_CHARACTER_BLOCK,
   SLOT_KEYS,
 } from './constants';
 import { CommentStyle, FileType } from './enums';
@@ -140,20 +140,18 @@ export function stripCommonIndent(lines: string[]): string[] {
  * @throws If the widest line exceeds {@link MAX_INNER_CONTENT_LENGTH}
  * @returns The centered banner lines
  */
-export function centerBanner(rawLines: string[]): string[] {
+export function centerBanner(rawLines: string[], inner: number = MAX_INNER_CONTENT_LENGTH): string[] {
   // Trim trailing whitespace and drop any shared indent so the block starts flush-left
   const lines: string[] = stripCommonIndent(rawLines.map((line: string): string => line.replace(/\s+$/, '')));
 
   // Measure the widest line and guard against a banner that can't fit
   const maxWidth: number = Math.max(...lines.map(normalizeStringLength));
-  if (maxWidth > MAX_INNER_CONTENT_LENGTH) {
-    throw new Error(
-      `Banner is ${maxWidth} chars wide but the limit is ${MAX_INNER_CONTENT_LENGTH}. Use a narrower font or shorter text.`,
-    );
+  if (maxWidth > inner) {
+    throw new Error(`Banner is ${maxWidth} chars wide but the limit is ${inner}. Use a narrower font or shorter text.`);
   }
 
   // Pad every line with the same left offset so the block is centered as a whole
-  const padding: string = ' '.repeat(Math.floor((MAX_INNER_CONTENT_LENGTH - maxWidth) / 2));
+  const padding: string = ' '.repeat(Math.floor((inner - maxWidth) / 2));
   return lines.map((line: string): string => padding + line);
 }
 
@@ -165,16 +163,16 @@ export function centerBanner(rawLines: string[]): string[] {
  * @throws If the file name is too long to fit alongside the bars and padding
  * @returns The rendered bar line
  */
-export function fileNameBar(fileName: string): string {
+export function fileNameBar(fileName: string, inner: number = MAX_INNER_CONTENT_LENGTH): string {
   // Measure the file name and guard against overflow (6 chars reserved for the two spaces and minimal bars)
   const fileNameLength: number = normalizeStringLength(fileName);
-  if (fileNameLength > MAX_INNER_CONTENT_LENGTH - 6) {
-    throw new Error(`File path "${fileName}" is too long for the banner (max ${MAX_INNER_CONTENT_LENGTH - 6} chars).`);
+  if (fileNameLength > inner - 6) {
+    throw new Error(`File path "${fileName}" is too long for the banner (max ${inner - 6} chars).`);
   }
 
   // Split the leftover space (minus the two padding spaces) into left and right bar widths
-  const left: number = Math.floor((MAX_INNER_CONTENT_LENGTH - 2 - fileNameLength) / 2);
-  const right: number = MAX_INNER_CONTENT_LENGTH - 2 - fileNameLength - left;
+  const left: number = Math.floor((inner - 2 - fileNameLength) / 2);
+  const right: number = inner - 2 - fileNameLength - left;
 
   // Assemble the bar with the name centered between the two runs of block characters
   return BAR_CHARACTER.repeat(left) + ' ' + fileName + ' ' + BAR_CHARACTER.repeat(right);
@@ -187,9 +185,9 @@ export function fileNameBar(fileName: string): string {
  * @param title - The section title to embed in the divider
  * @returns The rendered divider line
  */
-export function createSectionDivider(title: string): string {
+export function createSectionDivider(title: string, inner: number = MAX_INNER_CONTENT_LENGTH): string {
   const head: string = `${RULE_CHARACTER.repeat(3)} ${title} `;
-  return head + RULE_CHARACTER.repeat(Math.max(0, MAX_INNER_CONTENT_LENGTH - normalizeStringLength(head)));
+  return head + RULE_CHARACTER.repeat(Math.max(0, inner - normalizeStringLength(head)));
 }
 
 /* ─── Section model ──────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -456,17 +454,25 @@ export function detectCommentStyle(fileName: string): CommentStyle {
  * @param fileType - The file type deciding which sections apply
  * @returns The header's inner content lines
  */
-export function buildHeaderContent(spec: IHeaderSpec, config: IHeaderConfig, fileType: FileType): string[] {
+export function buildHeaderContent(
+  spec: IHeaderSpec,
+  config: IHeaderConfig,
+  fileType: FileType,
+  inner: number = MAX_INNER_CONTENT_LENGTH,
+): string[] {
+  // Every full-width element is drawn to the inner width, which is the header width less whatever the comment style
+  // prepends to each line; a bar sized for one style is a character short or long in another
+  const separator: string = BAR_CHARACTER.repeat(inner);
   // The banner, filename bar, and wrapped description that open every header. The filename is normalized to its
   // banner alias (i.e. a real `server/utils/foo.ts` path passed via `-f` renders as `#server/utils/foo.ts`) while the
   // spec's `file` stays the real path for detection and the write target; an already-aliased label is left unchanged.
   const openingLines: string[] = [
-    SEPARATOR_CHARACTER_BLOCK,
+    separator,
     '',
-    ...centerBanner(config.banner),
+    ...centerBanner(config.banner, inner),
     '',
-    SEPARATOR_CHARACTER_BLOCK,
-    fileNameBar(toBannerLabel(spec.file)),
+    separator,
+    fileNameBar(toBannerLabel(spec.file), inner),
     '',
     ...wrap(spec.description),
   ];
@@ -474,11 +480,11 @@ export function buildHeaderContent(spec: IHeaderSpec, config: IHeaderConfig, fil
   // Each populated section expanded to its divider + body; a section with no content contributes nothing
   const sectionLines: string[] = SECTIONS_BY_FILE_TYPE[fileType].flatMap((section: ISection): string[] => {
     const body: string[] | undefined = section.getLines(spec);
-    return body && body.length ? ['', createSectionDivider(section.title), '', ...body] : [];
+    return body && body.length ? ['', createSectionDivider(section.title, inner), '', ...body] : [];
   });
 
   // Compose the opening, the sections, and a closing separator
-  return [...openingLines, ...sectionLines, '', SEPARATOR_CHARACTER_BLOCK];
+  return [...openingLines, ...sectionLines, '', separator];
 }
 
 /**
@@ -511,7 +517,8 @@ export function applyCommentStyle(lines: string[], commentStyle: CommentStyle): 
 export function renderHeader(spec: IHeaderSpec, config: IHeaderConfig): string {
   const fileType: FileType = (spec.kind as FileType | undefined) ?? detectFileType(spec.file);
   const commentStyle: CommentStyle = (spec.comment as CommentStyle | undefined) ?? detectCommentStyle(spec.file);
-  return applyCommentStyle(buildHeaderContent(spec, config, fileType), commentStyle);
+  const inner: number = config.width - COMMENT_PREFIX_LENGTHS[commentStyle];
+  return applyCommentStyle(buildHeaderContent(spec, config, fileType, inner), commentStyle);
 }
 
 /* ─── Write mode ─────────────────────────────────────────────────────────────────────────────────────────────────── */
