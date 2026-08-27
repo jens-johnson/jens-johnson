@@ -23,7 +23,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ParseArgsConfig } from 'node:util';
 
-import { FileType } from './enums';
+import { CommentStyle, FileType } from './enums';
 import type { TFieldKeyLabels } from './types';
 
 /**
@@ -32,6 +32,21 @@ import type { TFieldKeyLabels } from './types';
  * @constant
  */
 export const MAX_INNER_CONTENT_LENGTH: number = 117;
+
+/**
+ * How many characters each comment style prepends to every line, which is what the inner content width has to make
+ * room for. A block comment contributes `' * '`, a hash comment `'# '`, and an HTML comment nothing, since it wraps
+ * the block rather than prefixing each line.
+ * @internal
+ * @constant
+ */
+export const COMMENT_PREFIX_LENGTHS: Record<CommentStyle, number> = {
+  [CommentStyle.block]: 3,
+
+  [CommentStyle.hash]: 2,
+
+  [CommentStyle.html]: 0,
+};
 
 /**
  * The solid block character used to draw header bars and separators.
