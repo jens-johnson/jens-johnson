@@ -65,13 +65,15 @@ export default withNuxt(          // or a plain array outside Nuxt
   // Type naming: I/T prefixes with the documented exemptions (full block in naming.md)
   { name: 'repo/type-naming', rules: { '@typescript-eslint/naming-convention': [/* see naming.md */] } },
 
-  // JSDoc presence + shape (see comments.md)
+  // JSDoc presence + shape (see comments.md); error, not warn, so a missing description fails the gate.
+  // `require-description` inspects every JSDoc block (`contexts: ['any']`), not only functions
   {
     name: 'repo/jsdoc',
     plugins: { jsdoc: jsdocPlugin },
     rules: {
-      'jsdoc/require-jsdoc': 'warn',
-      'jsdoc/require-description': 'warn',
+      'jsdoc/require-jsdoc': 'error',
+      'jsdoc/require-description': ['error', { contexts: ['any'] }],
+      'jsdoc/require-throws': 'error',
     },
   },
 
@@ -97,6 +99,14 @@ export default withNuxt(          // or a plain array outside Nuxt
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
+  },
+
+  // Top-level functions are declarations: reject an arrow assigned at module or `<script setup>` scope (functions.md).
+  // The shared package exports the selector list as SCRIPT_SCOPE_ARROW_SELECTORS; a `.vue` block restates it alongside
+  // SFC_MODULE_SELECTORS, which keeps interfaces, type aliases, enums, and every inline type literal out of SFCs
+  {
+    name: 'repo/script-scope-functions',
+    rules: { 'no-restricted-syntax': ['error', ...SCRIPT_SCOPE_ARROW_SELECTORS] },
   },
 
   // Neutralize anything that fights Prettier; MUST come before the layout block
@@ -160,8 +170,12 @@ Escape hatches: `LEFTHOOK_EXCLUDE=<hook>` for one hook, `LEFTHOOK=0` for all; bo
 ## The `check` Gate
 
 Every repo exposes **`pnpm check`** (lint → typecheck → test → build when present, sequential) as the local CI mirror
-([project-structure.md](project-structure.md#script-naming)); CI runs the same steps, so green `check` means a green
-pipeline.
+([project-structure.md](project-structure.md#script-naming)). A green local run verifies those checks in that
+environment; CI must verify its own environment. It does not mean the code conforms to this guide: only rules
+identified as automated in each spoke's Enforcement table are
+mechanized, and everything marked "convention + review" (component folder layout, divider names, JSDoc tags, header
+sections) passes a green gate untouched. The review checklist in [agent-workflow.md](../agent-workflow.md) covers
+that remainder; a green `check` is the entry ticket to review, not a substitute for it.
 
 ## Consuming the Shared Configs
 
@@ -173,7 +187,7 @@ reduce to one-line re-exports (install via npm once published, or
 | Tool       | Consumption                                                                        |
 |------------|--------------------------------------------------------------------------------------|
 | Prettier   | `"prettier": "@jens-johnson/style-guide/prettier"` in `package.json`                  |
-| ESLint     | `createEslintConfig(...overrides)` from `@jens-johnson/style-guide/eslint`; framework repos spread `createFrameworkEslintConfig(...overrides)` into their wrapper (i.e. `withNuxt(...)`), whose base already provides the js/ts cores |
+| ESLint     | `createEslintConfig(...overrides)` from `@jens-johnson/style-guide/eslint`; framework repos spread `createFrameworkEslintConfig(...overrides)` into their wrapper (i.e. `withNuxt(...)`), whose base already provides the js/ts cores and registers the `vue` and `@typescript-eslint` plugins the `.vue` blocks reference. `SCRIPT_SCOPE_ARROW_SELECTORS` and `SFC_MODULE_SELECTORS` are exported for repos that set `no-restricted-syntax` themselves |
 | Stylelint  | `extends: ['@jens-johnson/style-guide/stylelint']`                                    |
 | commitlint | `createCommitlintConfig({ scopes })` from `@jens-johnson/style-guide/commitlint`      |
 | tsconfig   | `"extends": "@jens-johnson/style-guide/tsconfig"`                                     |

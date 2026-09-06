@@ -35,6 +35,54 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 /**
+ * `no-restricted-syntax` selectors that reject an arrow function assigned to a variable at module or `<script setup>`
+ * scope, where the guide requires a `function` declaration. Arrows nested in function bodies or passed as arguments
+ * do not match either selector.
+ * @public
+ * @constant
+ */
+export const SCRIPT_SCOPE_ARROW_SELECTORS = [
+  {
+    selector: 'Program > VariableDeclaration > VariableDeclarator > ArrowFunctionExpression',
+    message: 'Declare top-level functions with `function`; arrows are for callbacks and closures (functions.md).',
+  },
+  {
+    selector: 'Program > ExportNamedDeclaration > VariableDeclaration > VariableDeclarator > ArrowFunctionExpression',
+    message: 'Declare exported functions with `function`; arrows are for callbacks and closures (functions.md).',
+  },
+];
+
+/**
+ * `no-restricted-syntax` selectors that keep type definitions out of a single-file component: interfaces, type
+ * aliases, and enums belong in the component's co-located `types.ts` / `enums.ts`, and no type literal appears
+ * anywhere in the script, whether as a define-macro argument, nested inside `Readonly<...>`, or annotating a
+ * variable; every shape is named in `types.ts` (vue-nuxt.md). Primitive and named types (`defineModel<string>()`,
+ * `defineProps<ICardProps>()`) are not literals and pass.
+ * @public
+ * @constant
+ */
+export const SFC_MODULE_SELECTORS = [
+  {
+    selector: 'TSInterfaceDeclaration',
+    message: "Declare interfaces in the component folder's `types.ts`, not inside the SFC (vue-nuxt.md).",
+  },
+  {
+    selector: 'TSTypeAliasDeclaration',
+    message: "Declare type aliases in the component folder's `types.ts`, not inside the SFC (vue-nuxt.md).",
+  },
+  {
+    selector: 'TSEnumDeclaration',
+    message: "Declare enums in the component folder's `enums.ts`, not inside the SFC (vue-nuxt.md).",
+  },
+  {
+    selector: 'TSTypeLiteral',
+    message:
+      "Name this shape in the component folder's `types.ts` (`I<Component>Props`, `I<Component>Emits`, " +
+      '`I<Component>Slots`, or a domain interface); an SFC contains no inline type literals (vue-nuxt.md).',
+  },
+];
+
+/**
  * Builds the framework-independent style-guide blocks shared by every factory below: ignores, globals, import
  * hygiene, type naming, JSDoc, sonarjs, general rules, the Prettier neutralizer, and the layout-hardening block.
  * @internal
@@ -132,6 +180,8 @@ function createStyleGuideBlocks() {
      *
      * JSDoc presence and shape. These are `error`, not `warn`: the guide treats documentation as required, and a
      * warn-level rule is invisible to a `pnpm check` gate that only fails on errors, so violations silently ship.
+     * `require-description` runs with `contexts: ['any']` because its default only inspects functions, which lets an
+     * empty JSDoc block on an interface, type, enum, or constant pass as documented.
      */
     {
       name: '@jens-johnson/style-guide/jsdoc',
@@ -147,7 +197,7 @@ function createStyleGuideBlocks() {
             contexts: ['TSInterfaceDeclaration', 'TSTypeAliasDeclaration', 'TSEnumDeclaration'],
           },
         ],
-        'jsdoc/require-description': 'error',
+        'jsdoc/require-description': ['error', { contexts: ['any'] }],
         'jsdoc/require-throws': 'error',
       },
     },
@@ -210,6 +260,21 @@ function createStyleGuideBlocks() {
       name: '@jens-johnson/style-guide/cli-console-exemption',
       files: ['bin/**', '**/cli.ts', '**/cli.mjs'],
       rules: { 'no-console': 'off' },
+    },
+
+    /**
+     * ═══ Script-Scope Function Declarations ══════════════════════════════════════════════════════════════════════════
+     *
+     * Top-level and exported functions are `function` declarations; arrows are for callbacks and closures
+     * (functions.md). The selectors match only arrows assigned at the top of a module or `<script setup>` block, so an
+     * arrow inside a function body or passed as an argument stays legal. Consumers that set `no-restricted-syntax`
+     * themselves replace this list; spread {@link SCRIPT_SCOPE_ARROW_SELECTORS} into their own to keep it.
+     */
+    {
+      name: '@jens-johnson/style-guide/script-scope-functions',
+      rules: {
+        'no-restricted-syntax': ['error', ...SCRIPT_SCOPE_ARROW_SELECTORS],
+      },
     },
 
     /**
@@ -383,6 +448,22 @@ export function createFrameworkEslintConfig(...overrides) {
             ],
           },
         ],
+      },
+    },
+
+    /**
+     * ═══ Vue SFC Modules ═════════════════════════════════════════════════════════════════════════════════════════════
+     *
+     * A component is a folder module: the SFC holds behavior and markup, while interfaces, type aliases, enums, and
+     * every object shape live in the co-located `types.ts` / `enums.ts`, so no type literal appears in the script. ESLint
+     * replaces rule options rather than merging them, so the script-scope arrow selectors are restated here to keep
+     * both restrictions active inside `.vue` files.
+     */
+    {
+      name: '@jens-johnson/style-guide/vue-sfc-modules',
+      files: ['**/*.vue'],
+      rules: {
+        'no-restricted-syntax': ['error', ...SCRIPT_SCOPE_ARROW_SELECTORS, ...SFC_MODULE_SELECTORS],
       },
     },
 

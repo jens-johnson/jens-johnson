@@ -125,8 +125,8 @@ A JSDoc block reads top-down in this order:
  * @public
  * @function
  * @param id - Stable user identifier from the auth provider
- * @returns The profile, or `null` when the user has not completed onboarding
  * @throws If the auth provider rejects the session token
+ * @returns The profile, or `null` when the user has not completed onboarding
  */
 async function fetchUserProfile(id: string): Promise<IUserProfile | null> { /* ... */ }
 ```
@@ -268,10 +268,10 @@ Files with logical groupings (constants, helpers, assembly, I/O, ...) separate t
 **exactly 120 characters**:
 
 ```typescript
-/* ─── Section Name ────────────────────────────────────────────────────────────────────────────────────────────────── */
+/* ─── Section Name ───────────────────────────────────────────────────────────────────────────────────────────────── */
 ```
 
-- Formula: `/* ─── NAME ` + `─` × (103 − length of NAME) + ` */` = 120 characters.
+- Formula: `/* ─── NAME ` + `─` × (109 − length of NAME) + ` */` = 120 characters.
 - Inside indented code, subtract the indent from the total (i.e. a 2-space indent yields 118 characters of content).
 - Prefer the `/* */` form over `//` for dividers.
 
@@ -292,6 +292,7 @@ Files with logical groupings (constants, helpers, assembly, I/O, ...) separate t
 |------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | 120-char limit (comments included) | Prettier `printWidth: 120` + ESLint `max-len` when enabled                                                                         |
 | JSDoc presence/shape               | `eslint-plugin-jsdoc`: `require-jsdoc`, `require-description`, `require-throws` at **error** (a warn-level rule is invisible to a check gate that only fails on errors) |
+| Non-function JSDoc descriptions   | `jsdoc/require-description` with `contexts: ['any']`; the default function-only coverage is insufficient |
 | Type duplication in JSDoc          | `jsdoc/no-types` (TypeScript files only; plain JS requires types instead)                                                                                                                   |
 | File headers                       | The [header generator](file-headers.md#tooling); never hand-formatted                                                              |
 | Comment reflow                     | Prettier does not rewrap comment prose; authors own comment line breaks                                                            |

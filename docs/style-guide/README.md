@@ -45,14 +45,17 @@ treat this guide as the review bar.
 If you are an agent generating or modifying code for me, follow this protocol:
 
 1. **Read the [cheat sheet](#cheat-sheet) in full** before generating any code; it resolves ~80% of style decisions.
-2. **Load the spoke documents** for whatever domain you are touching (i.e. writing a Vue component means loading
-   [`vue-nuxt.md`](conventions/vue-nuxt.md), [`comments.md`](conventions/comments.md), and
-   [`file-headers.md`](conventions/file-headers.md)).
+2. **Load the spoke documents** using the [task reading matrix](agent-workflow.md#read-by-task). Vue work requires
+   the TypeScript/module/comment rules as well as [`vue-nuxt.md`](conventions/vue-nuxt.md) and
+   [`file-headers.md`](conventions/file-headers.md); no individual example replaces the applicable spokes.
 3. **Respect precedence** (see [below](#precedence)); a repository's local configuration always wins over this guide.
-4. **When the guide is silent**, mimic the surrounding code in the repository; when both are silent, ask rather than
-   invent, and propose an addition to this guide so the gap gets closed.
+4. **Existing code is precedent, not authority**: it cannot override an explicit convention. When the guide is
+   silent, use surrounding code and engineering judgment for routine choices. Record material gaps and propose an
+   addition; ask when the choice changes product intent or contradicts owner direction.
 5. **Generated code must pass the repository's lint/typecheck gates unmodified**; if it doesn't, the code is wrong,
    not the gate.
+6. **Review rules that tools do not check**, following the [verification protocol](agent-workflow.md#verify-enforcement).
+   Record the guide revision and actual installed tooling version; a green gate does not prove full style compliance.
 
 ## Precedence
 
@@ -163,5 +166,6 @@ The one-glance defaults. Each links to its spoke for rationale and examples.
 ## Evolution
 
 This is a living document. Amendments land via PR with conventional commits; agents encountering an uncovered case
-should propose the new rule rather than deciding silently. When a rule changes, its tooling enforcement (Prettier,
-ESLint, etc.) changes in the same commit.
+should propose the new rule rather than deciding silently. When a rule changes, its existing tooling enforcement
+(Prettier, ESLint, etc.) and examples change in the same commit. For rules without automation, document the required
+manual review in the enforcement section; do not imply that the tooling checks them.

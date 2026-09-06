@@ -42,7 +42,7 @@ Related:
 5. Scripts table
 6. Architecture summary with `text`-fenced trees
 7. Deployment/workflow summary
-8. Conventions pointer (to this guide + repo `CLAUDE.md`)
+8. Conventions pointer (to this guide + repo `AGENTS.md`)
 
 ### Convention Documents (this guide's spokes)
 
@@ -80,13 +80,14 @@ Both are greppable (`grep -rn '🚩'`, `grep -rn 'JENS FEEDBACK'`); a clean grep
 - `docs/architecture/` for system/design docs; `docs/style-guide/` for conventions; `docs/.archive/` for superseded
   material (archive, never delete).
 - Doc filenames are kebab-case (`file-headers.md`, `ci.md`).
-- Agent-facing operational context goes to `CLAUDE.md` / `.claude/`, not `docs/`
-  ([project-structure.md](project-structure.md#agent-context)).
+- Shared agent-facing operational instructions go to root `AGENTS.md`; `CLAUDE.md` points to it and `.claude/`
+  holds runtime-specific material ([project-structure.md](project-structure.md#agent-context)). Human-facing
+  documentation and the reusable [agent workflow](../agent-workflow.md) stay in `docs/` and are linked from the entry point.
 
 ## Enforcement
 
 | Rule               | Tooling                                                     |
 |--------------------|---------------------------------------------------------------|
-| Formatting         | Prettier formats markdown (wrap, tables)                      |
+| Formatting         | Prettier where enabled; review hand-typeset Markdown excluded by repository ignore rules |
 | Em-dash ban        | Review + grep (`grep -rn '—' docs/`); candidate lint script   |
 | Anatomy            | Convention + review; this document is the reference           |

@@ -3,6 +3,9 @@
 How this repository is managed and maintained. This is the operator's manual; the _conventions_ the repo implements
 live in the [style guide](../style-guide/README.md).
 
+Agents enter through root [AGENTS.md](../../AGENTS.md); [CLAUDE.md](../../CLAUDE.md) points to the same instructions.
+The [agent workflow](../style-guide/agent-workflow.md) defines required reading and review beyond the automated gate.
+
 ## What This Repository Is
 
 `jens-johnson/jens-johnson` is a personal monorepo serving four roles:
@@ -58,16 +61,16 @@ version before `pnpm`/`git` runs (and reject `npm`/`npx`); see
 
 ## Package Scripts
 
-| Script               | What it does                                                            |
-| -------------------- | ----------------------------------------------------------------------- |
-| `pnpm lint`          | ESLint + Prettier check across the repo                                 |
-| `pnpm lint:fix`      | Autofix both (ESLint `--fix`, then Prettier `--write`)                  |
-| `pnpm typecheck`     | `tsc --noEmit` against the strict base tsconfig                         |
-| `pnpm test`          | Vitest, single run (`pnpm test:watch` for watch mode)                   |
-| `pnpm check`         | The full local CI gate: lint → typecheck → test; green = pushable       |
-| `pnpm header`        | Generate a file header (`--file`, `--description`, `--spec`, `--write`) |
-| `pnpm header:banner` | Render/save a figlet project banner                                     |
-| `pnpm prepare`       | (Automatic on install) installs the lefthook git hooks                  |
+| Script               | What it does                                                                           |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| `pnpm lint`          | ESLint + Prettier check across the repo                                                |
+| `pnpm lint:fix`      | Autofix both (ESLint `--fix`, then Prettier `--write`)                                 |
+| `pnpm typecheck`     | `tsc --noEmit` against the strict base tsconfig                                        |
+| `pnpm test`          | Vitest, single run (`pnpm test:watch` for watch mode)                                  |
+| `pnpm check`         | The automated local gate: lint → typecheck → test; also complete the convention review |
+| `pnpm header`        | Generate a file header (`--file`, `--description`, `--spec`, `--write`)                |
+| `pnpm header:banner` | Render/save a figlet project banner                                                    |
+| `pnpm prepare`       | (Automatic on install) installs the lefthook git hooks                                 |
 
 ## Git Hooks
 
@@ -121,8 +124,9 @@ The repo's flagship utility (spec: [file-headers.md](../style-guide/conventions/
 
 Follow [docs-and-prose.md](../style-guide/conventions/docs-and-prose.md) (doc anatomy, no em dashes, `i.e.` never
 `e.g.`). The guide's markdown is hand-typeset and deliberately listed in
-[`.prettierignore`](../../.prettierignore); do not run Prettier over it. When a rule changes, its enforcement
-(config) changes in the same commit.
+[`.prettierignore`](../../.prettierignore); do not run Prettier over it. When a rule changes, update its examples and
+existing enforcement in the same commit. Document manual review for rules without automation, verify changed links,
+and include consumer adoption steps when a new package pin or regeneration is required.
 
 ## Consumption
 
@@ -161,7 +165,11 @@ repo has no squash-duplication hazard; single-branch flow).
 
 ## Verification
 
-`pnpm check` is the single gate: if it is green locally, the push hooks and CI will be green. The in-band unit tests (`*.test.ts` beside their subjects) cover the generator's pure cores and its write-mode header replacement; when touching the generator,
+`pnpm check` runs the automated package gate. Also complete the applicable
+[convention review](../style-guide/agent-workflow.md#verify-enforcement); folder architecture, header contracts,
+and documentation accuracy are not established by a green command. Record the commit and working-tree state tested;
+CI must verify its own environment. The in-band unit tests (`*.test.ts` beside their subjects) cover the generator's
+pure cores and its write-mode header replacement; when touching the generator,
 also smoke the CLI (`pnpm header --help`, a `--write` round-trip on a scratch file) to exercise the argv-to-command
 edge the tests skip. When touching the shell environment, run `bash scripts/shell/init.sh` and a wrapped command
 (`PATH="$PWD/bin/wrappers:$PATH" pnpm --version`) as the equivalent smoke.

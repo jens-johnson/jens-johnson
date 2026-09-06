@@ -33,8 +33,9 @@ The default shape for libraries, CLIs, publishers, and services (anything not ow
 │   ├── architecture/       # System/design docs (CI, data flow, ...)
 │   ├── style-guide/        # Or a pointer to the canonical guide
 │   └── .archive/           # Retired planning docs; never delete history, archive it
-├── .claude/                # Agent context (see below)
-├── CLAUDE.md               # Agent instructions for this repo
+├── AGENTS.md               # Shared agent instructions (see below)
+├── CLAUDE.md               # Claude entry point; directs readers to AGENTS.md
+├── .claude/                # Optional Claude-specific tools and context
 ├── README.md
 ├── package.json
 ├── tsconfig.json
@@ -56,12 +57,26 @@ The default shape for libraries, CLIs, publishers, and services (anything not ow
 
 Every repo an agent touches carries its context explicitly:
 
-- **`CLAUDE.md`** at the root: repo-specific conventions, workflows, and overrides. It wins over this guide
-  (see [precedence](../README.md#precedence)).
-- **`.claude/`** for deeper material: `context-and-memory/` docs, commands/skills, settings. Repo-specific
-  conventions too large for `CLAUDE.md` live here and get linked from it.
+- **`AGENTS.md`** at the root: the shared source for repo-specific conventions, workflows, and documented overrides.
+  It wins over this guide (see [precedence](../README.md#precedence)). Link the human developer docs, canonical guide
+  location/revision policy, [task reading matrix](../agent-workflow.md#read-by-task), verification commands, and
+  review-only requirements. An entry point in this guide repository does not automatically load in a consumer repo.
+- **`CLAUDE.md`** at the root directs Claude readers to `AGENTS.md`. Keep shared instructions in one place; reserve
+  runtime-specific behavior for the relevant entry point. Follow links explicitly when a harness does not load them.
+- **`.claude/`** holds optional Claude-specific commands, skills, settings, and context. Instructions needed by all
+  agents must remain discoverable from `AGENTS.md`, regardless of which runtime is doing the work.
+- **Migrate existing repos without losing context**: preserve current product decisions and local instructions when
+  consolidating them into `AGENTS.md`, then replace duplicated shared rules in `CLAUDE.md` with the pointer.
 - When a convention in a repo diverges from this guide, the divergence is *documented there deliberately*, never
   implicit.
+
+Minimal Claude entry point:
+
+```markdown
+# Agent Instructions
+
+Read and follow [AGENTS.md](AGENTS.md) before planning or editing.
+```
 
 ## `package.json`
 
@@ -95,7 +110,8 @@ Scripts are **colon-namespaced verbs**: a base verb runs the aggregate, `verb:to
 | `check`                       | The full local CI gate: lint → typecheck → test → build (when present) |
 | `<domain>` / `<domain>:<sub>` | Repo tooling (`header`, `header:banner`, `gen:favicon`) |
 
-**Every repo has a `check` script** replicating CI locally; green `check` means CI will pass.
+**Every repo has a `check` script** replicating CI locally. A green local run verifies those checks in that
+environment; CI and the [manual convention review](../agent-workflow.md#verify-enforcement) still need their own evidence.
 
 ## Root Config Files
 

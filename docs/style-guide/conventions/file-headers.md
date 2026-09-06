@@ -47,6 +47,8 @@ The pieces, top to bottom:
 5. **Sections**: zero or more `─── TITLE ───` dividers with structured content. Only sections that apply to the file
    are included; a component with no slots has no `SLOTS` section.
 6. **Bottom rule**: a closing full-width `█` run.
+7. **One blank line** between the header and the first line of the file's content, in every comment style. The
+   generator writes it (releases before the fix omitted it inside Vue script blocks; regenerate to repair).
 
 ## Comment style by file type
 
@@ -61,7 +63,9 @@ The banner content is identical everywhere; only the surrounding comment syntax 
 ### Notes:
 
 - **Vue**: the header is a `/** */` block placed **inside** `<script setup lang="ts">` (the generator inserts it
-  right after the opening tag, or creates the script block if the file has none). A **template-only** component
+  right after the opening tag, followed by one blank line before the script body, or creates the script block if the
+  file has none). A component inside its folder module takes the full folder path in the filename bar
+  (`#components/containment/card/index.vue`). A **template-only** component
   with no logic (a slot pass-through, i.e. a Nuxt Content `ProseP`/`ProseCode` override) still gets a header; the
   generator adds an otherwise-empty `<script setup lang="ts">` block to host it. Every source file carries a
   header, no exceptions.
@@ -215,6 +219,8 @@ generator re-centers whatever is stored.
 ## Conventions
 
 - **Generate, never hand-format.** The 117/120 geometry and centering are exact; let the tool own them.
+- **One blank line follows the header.** The generator emits it for every comment style, including inside a Vue
+  script block; do not delete it, and do not pad it to more (Prettier collapses extra blank lines anyway).
 - **Keep descriptions to one line** and write whole sentences; prefer semicolons or a rewrite over em dashes.
 - **Only include sections that apply.** Omit empty ones rather than writing "none".
 - **Use the alias-prefixed path** in the filename bar for aliased source, otherwise the repo-relative path.

@@ -585,8 +585,12 @@ export function writeHeaderToFile(targetPath: string, header: string, fileType: 
     const scriptOpen: RegExpMatchArray | null = existing.match(/<script[^>]*>\n?/);
     if (scriptOpen && scriptOpen.index !== undefined) {
       const insertAt: number = scriptOpen.index + scriptOpen[0].length;
-      const scriptBody: string = removeExistingHeader(existing.slice(insertAt));
-      writeFileSync(absolutePath, existing.slice(0, insertAt) + header + scriptBody);
+      const scriptBody: string = removeExistingHeader(existing.slice(insertAt)).replace(/^\n+/, '');
+
+      // One blank line separates the header from the script body, as for every other file type; a block that closes
+      // immediately (a template-only component) keeps the closing tag directly after the header
+      const separatedScriptBody: string = scriptBody.startsWith('</script>') ? scriptBody : `\n${scriptBody}`;
+      writeFileSync(absolutePath, existing.slice(0, insertAt) + header + separatedScriptBody);
     } else {
       writeFileSync(absolutePath, `<script setup lang="ts">\n${header}</script>\n\n${existing}`);
     }
