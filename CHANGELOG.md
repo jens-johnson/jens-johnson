@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.9.3](https://github.com/jens-johnson/jens-johnson/compare/v0.9.2...v0.9.3) (2026-09-06)
+
+
+### 🐛 Bug Fixes
+
+* **file-header:** derive the inner width from the comment style ([a9d373b](https://github.com/jens-johnson/jens-johnson/commit/a9d373bb51a30356c7058b9d9425024dbd540af5))
+* **file-header:** derive the inner width from the comment style ([045c05c](https://github.com/jens-johnson/jens-johnson/commit/045c05c090a73ae82c2ed48742c34b7401ded146))
+* **style-guide:** enforce sfc conventions and agent review ([673e306](https://github.com/jens-johnson/jens-johnson/commit/673e306f7d9f68c47417c7a127263206a413866d))
+* **style-guide:** enforce sfc conventions and agent review ([0c4f545](https://github.com/jens-johnson/jens-johnson/commit/0c4f5459e63428fd6332185251a30b92923da1c8))
+
+
+### 📝 Docs
+
+* **style-guide:** sort interface, type-literal, and enum members ([#32](https://github.com/jens-johnson/jens-johnson/issues/32)) ([2b800bc](https://github.com/jens-johnson/jens-johnson/commit/2b800bc5dfe3ebb6709c82f8a38a67323014609f))
+
 ## [0.9.2](https://github.com/jens-johnson/jens-johnson/compare/v0.9.1...v0.9.2) (2026-07-13)
 
 
