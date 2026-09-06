@@ -461,8 +461,46 @@ describe('writeHeaderToFile', () => {
     );
     writeHeaderToFile(componentPath, header, FileType.vue);
 
+    // The header sits first in the block and one blank line separates it from the script body
     expect(readFileSync(componentPath, 'utf8')).toBe(
-      `<script setup lang="ts">\n${header}const x: number = 1;\n</script>\n`,
+      `<script setup lang="ts">\n${header}\nconst x: number = 1;\n</script>\n`,
+    );
+  });
+
+  it('does not stack blank lines when the script body already starts with one', () => {
+    const componentPath: string = join(scratchDirectory, 'padded.vue');
+    writeFileSync(componentPath, '<script setup lang="ts">\n\n\nconst x: number = 1;\n</script>\n');
+    const header: string = renderHeader(
+      {
+        ...minimalSpec,
+        file: 'padded.vue',
+        kind: 'vue',
+      },
+      config,
+    );
+    writeHeaderToFile(componentPath, header, FileType.vue);
+
+    expect(readFileSync(componentPath, 'utf8')).toBe(
+      `<script setup lang="ts">\n${header}\nconst x: number = 1;\n</script>\n`,
+    );
+  });
+
+  it('closes a template-only script block directly after the header', () => {
+    const componentPath: string = join(scratchDirectory, 'template-only.vue');
+    writeFileSync(componentPath, '<script setup lang="ts">\n</script>\n\n<template>\n  <slot />\n</template>\n');
+    const header: string = renderHeader(
+      {
+        ...minimalSpec,
+        file: 'template-only.vue',
+        kind: 'vue',
+      },
+      config,
+    );
+    writeHeaderToFile(componentPath, header, FileType.vue);
+
+    // An empty block has no body to separate, so no blank line is inserted before the closing tag
+    expect(readFileSync(componentPath, 'utf8')).toBe(
+      `<script setup lang="ts">\n${header}</script>\n\n<template>\n  <slot />\n</template>\n`,
     );
   });
 

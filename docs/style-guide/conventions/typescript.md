@@ -76,6 +76,10 @@ const minimumIndent = indents.length ? Math.min(...indents) : 0;
 **Object destructures are annotated too**, with the source's named type when one exists or a short inline shape
 otherwise; a destructure is a declaration like any other:
 
+Vue SFCs use the stricter [component-module rule](vue-nuxt.md#component-modules): put the object shape in the owning
+`types.ts` and import its name, including for destructure annotations. The inline-shape allowance below applies to
+ordinary TypeScript modules, not `.vue` files.
+
 ```typescript
 // ✅ DO: the named type documents what is being unwrapped
 const { activityId, tcx, elevationFeet }: IVertifixCommitRequest = parsed.request;

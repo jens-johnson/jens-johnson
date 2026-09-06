@@ -96,4 +96,5 @@ if (!email) { return false; }
 | Braced bodies, new line    | ESLint `curly: ['error', 'all']` + Prettier                                         |
 | Complexity ceiling         | `sonarjs/cognitive-complexity: ['warn', 15]`                                        |
 | Identical functions        | `sonarjs/no-identical-functions`                                                    |
-| Explicit return types      | Convention + review (candidate: `@typescript-eslint/explicit-function-return-type`) |
+| Explicit return types      | `@typescript-eslint/explicit-function-return-type` (error); contextually typed callbacks exempt |
+| Declarations over arrows   | `no-restricted-syntax` selectors in the `script-scope-functions` block: an arrow assigned at module or `<script setup>` scope is an error; arrows inside bodies and as arguments are untouched |
